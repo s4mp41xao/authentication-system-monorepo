@@ -51,11 +51,16 @@ class AuthService {
   async signout(): Promise<void> {
     const response = await fetch(`${API_URL}/auth/signout`, {
       method: 'POST',
-      credentials: 'include'
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify({}) // Enviar objeto vazio
     })
 
     if (!response.ok) {
-      throw new Error('Erro ao fazer logout')
+      const error = await response.text().catch(() => 'Erro ao fazer logout')
+      throw new Error(error)
     }
   }
 
