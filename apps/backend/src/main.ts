@@ -10,7 +10,7 @@ async function bootstrap() {
 
   // Enable CORS for frontend integration
   app.enableCors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3001', // URL do seu front-end
+    origin: process.env.FRONTEND_URL || 'http://localhost:5173', // URL do Vite dev server
     credentials: true, // Importante para Better Auth (cookies/sessões)
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -28,6 +28,8 @@ async function bootstrap() {
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
   console.log(`🚀 Aplicação rodando em http://localhost:${port}`);
-  console.log(`🌐 CORS habilitado para: ${process.env.FRONTEND_URL || 'http://localhost:3001'}`);
+  console.log(
+    `🌐 CORS habilitado para: ${process.env.FRONTEND_URL || 'http://localhost:3001'}`,
+  );
 }
 bootstrap();
