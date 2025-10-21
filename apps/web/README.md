@@ -159,7 +159,7 @@ const response = await fetch('/auth/signup', {
   headers: { 'Content-Type': 'application/json' },
   credentials: 'include', // Importante para cookies
   body: JSON.stringify(data)
-});
+})
 
 // Login
 const response = await fetch('/auth/signin', {
@@ -167,7 +167,7 @@ const response = await fetch('/auth/signin', {
   headers: { 'Content-Type': 'application/json' },
   credentials: 'include',
   body: JSON.stringify(data)
-});
+})
 ```
 
 ---
@@ -180,7 +180,7 @@ const response = await fetch('/auth/signin', {
 enum UserRole {
   INFLUENCER = 'influencer',
   BRAND = 'brand',
-  ORI = 'ori',
+  ORI = 'ori'
 }
 ```
 
@@ -188,13 +188,13 @@ enum UserRole {
 
 ```typescript
 interface User {
-  id: string;
-  email: string;
-  name: string;
-  role: UserRole;
-  emailVerified: boolean;
-  createdAt: Date | string;
-  updatedAt: Date | string;
+  id: string
+  email: string
+  name: string
+  role: UserRole
+  emailVerified: boolean
+  createdAt: Date | string
+  updatedAt: Date | string
 }
 ```
 
@@ -202,10 +202,10 @@ interface User {
 
 ```typescript
 interface SignupDto {
-  email: string;
-  password: string;
-  name: string;
-  role: UserRole;
+  email: string
+  password: string
+  name: string
+  role: UserRole
 }
 ```
 
@@ -233,7 +233,7 @@ interface SignupDto {
   type="email"
   required
   value={email}
-  onChange={(e) => setEmail(e.target.value)}
+  onChange={e => setEmail(e.target.value)}
   error="Email inválido"
   helperText="Digite seu melhor email"
 />
@@ -243,15 +243,15 @@ interface SignupDto {
 
 ## 🛣️ Rotas
 
-| Rota | Componente | Descrição |
-|------|-----------|-----------|
-| `/` | Redirect → `/signup` | Página inicial |
-| `/signup` | SignupPage | Registro de usuário |
-| `/signin` | SigninPage | Login de usuário |
-| `/influencer/dashboard` | InfluencerDashboard | Dashboard do influencer |
-| `/brand/dashboard` | BrandDashboard | Dashboard da brand |
-| `/admin/dashboard` | AdminDashboard | Dashboard do admin |
-| `*` | Redirect → `/signup` | 404 |
+| Rota                    | Componente           | Descrição               |
+| ----------------------- | -------------------- | ----------------------- |
+| `/`                     | Redirect → `/signup` | Página inicial          |
+| `/signup`               | SignupPage           | Registro de usuário     |
+| `/signin`               | SigninPage           | Login de usuário        |
+| `/influencer/dashboard` | InfluencerDashboard  | Dashboard do influencer |
+| `/brand/dashboard`      | BrandDashboard       | Dashboard da brand      |
+| `/admin/dashboard`      | AdminDashboard       | Dashboard do admin      |
+| `*`                     | Redirect → `/signup` | 404                     |
 
 ---
 
@@ -308,8 +308,8 @@ Certifique-se que o backend tem CORS configurado:
 // apps/backend/src/main.ts
 app.enableCors({
   origin: 'http://localhost:5173',
-  credentials: true,
-});
+  credentials: true
+})
 ```
 
 ### Erro: Proxy não funciona
@@ -371,4 +371,3 @@ npm run lint
 ---
 
 **Desenvolvido com ❤️ usando React + Vite + Tailwind**
-

@@ -1,55 +1,55 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
-import { authService } from '../../services/authService';
-import type { SigninDto } from '../../types';
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { Eye, EyeOff, ArrowLeft } from 'lucide-react'
+import { authService } from '../../services/authService'
+import type { SigninDto } from '../../types'
 
 export function SigninPage() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const [formData, setFormData] = useState<SigninDto>({
     email: '',
-    password: '',
-  });
+    password: ''
+  })
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
+    const { name, value } = e.target
+    setFormData(prev => ({
       ...prev,
-      [name]: value,
-    }));
-  };
+      [name]: value
+    }))
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
+    e.preventDefault()
+    setError('')
+    setLoading(true)
 
     try {
-      const response = await authService.signin(formData);
-      console.log('Login bem-sucedido:', response);
-      
+      const response = await authService.signin(formData)
+      console.log('Login bem-sucedido:', response)
+
       // Armazenar dados do usuário
-      localStorage.setItem('user', JSON.stringify(response.user));
-      
+      localStorage.setItem('user', JSON.stringify(response.user))
+
       // Redirecionar baseado no role
       if (response.user.role === 'ori') {
-        navigate('/admin/dashboard');
+        navigate('/admin/dashboard')
       } else if (response.user.role === 'brand') {
-        navigate('/brand/dashboard');
+        navigate('/brand/dashboard')
       } else {
-        navigate('/influencer/dashboard');
+        navigate('/influencer/dashboard')
       }
     } catch (err: any) {
-      setError(err.message || 'Credenciais inválidas');
+      setError(err.message || 'Credenciais inválidas')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <div className="min-h-screen bg-white flex">
@@ -172,6 +172,5 @@ export function SigninPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }
-

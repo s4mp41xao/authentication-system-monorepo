@@ -1,0 +1,70 @@
+### Variáveis
+@baseUrl = http://localhost:3000
+@contentType = application/json
+
+### 1. Criar novo usuário (Sign Up)
+POST {{baseUrl}}/auth/signup
+Content-Type: {{contentType}}
+
+{
+  "email": "teste@example.com",
+  "password": "senha123456",
+  "name": "Usuário Teste"
+}
+
+### 2. Criar outro usuário
+POST {{baseUrl}}/auth/signup
+Content-Type: {{contentType}}
+
+{
+  "email": "samuel@example.com",
+  "password": "minhasenha123",
+  "name": "Samuel Paixão"
+}
+
+### 3. Fazer login com usuário criado (Sign In)
+POST {{baseUrl}}/auth/signin
+Content-Type: {{contentType}}
+
+{
+  "email": "teste@example.com",
+  "password": "senha123456"
+}
+
+### 4. Fazer login com segundo usuário
+POST {{baseUrl}}/auth/signin
+Content-Type: {{contentType}}
+
+{
+  "email": "samuel@example.com",
+  "password": "minhasenha123"
+}
+
+### 5. Testar validação - email inválido (deve falhar)
+POST {{baseUrl}}/auth/signup
+Content-Type: {{contentType}}
+
+{
+  "email": "email-invalido",
+  "password": "senha123",
+  "name": "Teste"
+}
+
+### 6. Testar validação - senha curta (deve falhar)
+POST {{baseUrl}}/auth/signup
+Content-Type: {{contentType}}
+
+{
+  "email": "novo@example.com",
+  "password": "123",
+  "name": "Teste"
+}
+
+### 7. Testar login com credenciais inválidas
+POST {{baseUrl}}/auth/signin
+Content-Type: {{contentType}}
+
+{
+  "email": "naoexiste@example.com",
+  "password": "senhaerrada"
+}

@@ -1,80 +1,80 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Users, Building, Eye, EyeOff, ArrowLeft } from 'lucide-react';
-import { authService } from '../../services/authService';
-import { UserRole } from '../../types';
-import type { SignupDto } from '../../types';
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { Users, Building, Eye, EyeOff, ArrowLeft } from 'lucide-react'
+import { authService } from '../../services/authService'
+import { UserRole } from '../../types'
+import type { SignupDto } from '../../types'
 
 export function SignupPage() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const [formData, setFormData] = useState<SignupDto>({
     name: '',
     email: '',
     password: '',
-    role: UserRole.INFLUENCER,
-  });
+    role: UserRole.INFLUENCER
+  })
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const userTypeOptions = [
     {
       type: UserRole.INFLUENCER,
       title: 'Influenciador',
       description: 'Crie conteúdo e conecte-se com marcas',
-      icon: Users,
+      icon: Users
     },
     {
       type: UserRole.BRAND,
       title: 'Marca',
       description: 'Encontre influenciadores para suas campanhas',
-      icon: Building,
-    },
-  ];
+      icon: Building
+    }
+  ]
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
+    const { name, value } = e.target
+    setFormData(prev => ({
       ...prev,
-      [name]: value,
-    }));
-  };
+      [name]: value
+    }))
+  }
 
   const handleUserTypeSelect = (role: UserRole) => {
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      role,
-    }));
-  };
+      role
+    }))
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
+    e.preventDefault()
+    setError('')
+    setLoading(true)
 
     try {
-      const response = await authService.signup(formData);
-      console.log('Usuário criado:', response);
-      
+      const response = await authService.signup(formData)
+      console.log('Usuário criado:', response)
+
       // Armazenar dados do usuário
-      localStorage.setItem('user', JSON.stringify(response.user));
-      
+      localStorage.setItem('user', JSON.stringify(response.user))
+
       // Redirecionar baseado no role
       if (response.user.role === UserRole.ORI) {
-        navigate('/admin/dashboard');
+        navigate('/admin/dashboard')
       } else if (response.user.role === UserRole.BRAND) {
-        navigate('/brand/dashboard');
+        navigate('/brand/dashboard')
       } else {
-        navigate('/influencer/dashboard');
+        navigate('/influencer/dashboard')
       }
     } catch (err: any) {
-      setError(err.message || 'Erro ao criar conta');
+      setError(err.message || 'Erro ao criar conta')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <div className="min-h-screen bg-white flex">
@@ -112,8 +112,8 @@ export function SignupPage() {
                   Tipo de Perfil
                 </label>
                 <div className="grid grid-cols-1 gap-3">
-                  {userTypeOptions.map((option) => {
-                    const IconComponent = option.icon;
+                  {userTypeOptions.map(option => {
+                    const IconComponent = option.icon
                     return (
                       <button
                         key={option.type}
@@ -137,7 +137,7 @@ export function SignupPage() {
                           </div>
                         </div>
                       </button>
-                    );
+                    )
                   })}
                 </div>
               </div>
@@ -237,12 +237,12 @@ export function SignupPage() {
           <div className="text-center text-white">
             <h3 className="text-4xl font-bold mb-4">Bem-vindo!</h3>
             <p className="text-xl text-gray-300 max-w-md">
-              Junte-se à nossa plataforma e conecte-se com influenciadores e marcas.
+              Junte-se à nossa plataforma e conecte-se com influenciadores e
+              marcas.
             </p>
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
-

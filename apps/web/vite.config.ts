@@ -7,8 +7,8 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
+      '@': path.resolve(__dirname, './src')
+    }
   },
   server: {
     port: 5173,
@@ -16,16 +16,16 @@ export default defineConfig({
       // Proxy para o backend NestJS
       '/auth': {
         target: 'http://localhost:3000',
-        changeOrigin: true,
+        changeOrigin: true
       },
       '/admin': {
         target: 'http://localhost:3000',
-        changeOrigin: true,
+        changeOrigin: true
       },
       '/api': {
         target: 'http://localhost:3000',
-        changeOrigin: true,
-      },
-    },
-  },
+        changeOrigin: true
+      }
+    }
+  }
 })

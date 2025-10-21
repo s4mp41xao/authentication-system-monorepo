@@ -1,0 +1,73 @@
+### Teste de Login - Admin ORI (CREDENCIAIS REAIS)
+POST http://localhost:3000/auth/signin
+Content-Type: application/json
+
+{
+  "email": "admin@ori.com",
+  "password": "?cN^3Yyb/4@GkbH"
+}
+
+###
+
+### Teste de Registro - Influencer
+POST http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+  "email": "influencer@test.com",
+  "password": "senha123",
+  "name": "Influencer Test",
+  "role": "influencer"
+}
+
+###
+
+### Teste de Registro - Brand
+POST http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+  "email": "brand@test.com",
+  "password": "senha123",
+  "name": "Brand Test",
+  "role": "brand"
+}
+
+###
+
+### Teste de Registro - ORI (Admin)
+POST http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+  "email": "admin@test.com",
+  "password": "senha123",
+  "name": "Admin Test",
+  "role": "ori"
+}
+
+###
+
+### Teste de Login
+POST http://localhost:3000/auth/signin
+Content-Type: application/json
+
+{
+  "email": "influencer@test.com",
+  "password": "senha123"
+}
+
+###
+
+### Teste de Role Inválido (deve falhar)
+POST http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+  "email": "invalid@test.com",
+  "password": "senha123",
+  "name": "Invalid Test",
+  "role": "invalid_role"
+}
+
+###
