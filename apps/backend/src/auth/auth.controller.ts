@@ -25,6 +25,9 @@ export class AuthController {
   @Post('signin')
   async login(@Body() signinDto: SigninDto, @Req() req, @Res() res) {
     const auth = await createAuth();
+    
+    console.log('🔐 Tentando fazer login com:', signinDto.email);
+    
     const result = await auth.api.signInEmail({
       body: {
         email: signinDto.email,
@@ -32,6 +35,26 @@ export class AuthController {
       },
       headers: req.headers,
     });
+
+    console.log('✅ Login bem-sucedido:', {
+      userId: result?.user?.id,
+      email: result?.user?.email,
+      role: result?.user?.role,
+      token: result?.token ? 'presente' : 'ausente',
+    });
+
+    // Se o Better Auth retornou um cookie, definir explicitamente
+    if (result?.token) {
+      console.log('🍪 Definindo cookie com token:', result.token);
+      res.cookie('better-auth.session_token', result.token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 dias
+      });
+    }
+
     return res.json(result);
   }
 

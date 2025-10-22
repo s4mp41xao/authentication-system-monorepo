@@ -4,7 +4,7 @@ import { mongodbAdapter } from 'better-auth/adapters/mongodb';
 import { UserRole } from '../auth/enums/user-role.enum';
 
 // Singleton to reuse the same client and auth instance
-let authInstance: { api: any } | null = null;
+let authInstance: any = null;
 let clientInstance: MongoClient | null = null;
 
 async function createAuth() {
@@ -48,6 +48,11 @@ async function createAuth() {
           },
         },
       },
+      // Configuração de sessão
+      session: {
+        expiresIn: 60 * 60 * 24 * 30, // 30 dias
+        updateAge: 60 * 60 * 24, // Atualiza a cada 1 dia
+      },
     });
 
     // Ensure methods exist
@@ -57,7 +62,7 @@ async function createAuth() {
       );
     }
 
-    authInstance = { api: auth.api };
+    authInstance = auth; // Armazena a instância completa do auth
     return authInstance;
   } catch (error) {
     console.error('❌ Erro ao conectar Better Auth:', error);
