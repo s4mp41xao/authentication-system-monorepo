@@ -40,6 +40,15 @@ Content-Type: {{contentType}}
   "password": "minhasenha123"
 }
 
+### Fazer login com ADM ORI
+POST {{baseUrl}}/auth/signin
+Content-Type: {{contentType}}
+
+{
+  "email": "admin@ori.com",
+  "password": "?cN^3Yyb/4@GkbH"
+}
+
 ### 5. Testar validação - email inválido (deve falhar)
 POST {{baseUrl}}/auth/signup
 Content-Type: {{contentType}}

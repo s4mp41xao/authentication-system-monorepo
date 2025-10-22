@@ -1,0 +1,184 @@
+### Testes Completos - Admin ORI (Com Login Incluído)
+### Este arquivo inclui o login, facilitando os testes
+
+# ========================================
+# PASSO 1: FAZER LOGIN COMO ORI
+# ========================================
+
+### Login Admin ORI (Execute isso primeiro!)
+POST http://localhost:3000/auth/signin
+Content-Type: application/json
+
+{
+  "email": "admin@ori.com",
+  "password": "?cN^3Yyb/4@GkbH"
+}
+
+# ✅ Após executar o login acima, os cookies serão mantidos para as próximas requisições
+# ⚠️ Execute as requisições abaixo EM SEQUÊNCIA neste mesmo arquivo
+
+###
+
+# ========================================
+# Dashboard ORI - Estatísticas
+# ========================================
+
+### Obter estatísticas do dashboard
+GET http://localhost:3000/admin/dashboard
+Content-Type: application/json
+
+###
+
+# ========================================
+# Influencers - Gerenciamento
+# ========================================
+
+### Listar todos os influencers
+GET http://localhost:3000/admin/influencers
+Content-Type: application/json
+
+###
+
+# ========================================
+# Brands - Gerenciamento
+# ========================================
+
+### Listar todas as marcas
+GET http://localhost:3000/admin/brands
+Content-Type: application/json
+
+###
+
+# ========================================
+# Campanhas - Gerenciamento
+# ========================================
+
+### Listar todas as campanhas ativas
+GET http://localhost:3000/admin/campaigns
+Content-Type: application/json
+
+###
+
+### Criar nova campanha (substitua o brandId por um ID real)
+POST http://localhost:3000/admin/campaigns
+Content-Type: application/json
+
+{
+  "name": "Campanha Black Friday 2025",
+  "brandId": "ID_DA_MARCA_AQUI",
+  "description": "Campanha especial de Black Friday com grandes descontos",
+  "status": "active",
+  "budget": 75000,
+  "startDate": "2025-11-20T00:00:00.000Z",
+  "endDate": "2025-11-30T23:59:59.000Z"
+}
+
+###
+
+### Obter detalhes de uma campanha específica (substitua o ID)
+GET http://localhost:3000/admin/campaigns/ID_DA_CAMPANHA_AQUI
+Content-Type: application/json
+
+###
+
+### Atribuir influencer a uma campanha (substitua os IDs)
+POST http://localhost:3000/admin/campaigns/ID_DA_CAMPANHA_AQUI/assign/ID_DO_INFLUENCER_AQUI
+Content-Type: application/json
+
+###
+
+# ========================================
+# Usuários - Gerenciamento (Admin)
+# ========================================
+
+### Criar novo usuário (admin pode criar qualquer role)
+POST http://localhost:3000/admin/users
+Content-Type: application/json
+
+{
+  "email": "novoadmin@example.com",
+  "password": "senha123",
+  "name": "Novo Administrador",
+  "role": "ORI"
+}
+
+###
+
+### Listar todos os usuários
+GET http://localhost:3000/admin/users
+Content-Type: application/json
+
+###
+
+### Atualizar role de um usuário (substitua o ID)
+PATCH http://localhost:3000/admin/users/ID_DO_USUARIO_AQUI/role
+Content-Type: application/json
+
+{
+  "role": "BRAND"
+}
+
+###
+
+### Deletar um usuário (substitua o ID)
+DELETE http://localhost:3000/admin/users/ID_DO_USUARIO_AQUI
+Content-Type: application/json
+
+###
+
+# ========================================
+# Rotas de Exemplo - Teste de Roles
+# ========================================
+
+### Rota apenas para ORI
+GET http://localhost:3000/example/admin-only
+Content-Type: application/json
+
+###
+
+### Rota para Brands e ORI
+GET http://localhost:3000/example/brands-and-admin
+Content-Type: application/json
+
+###
+
+### Rota para Influencers e ORI
+GET http://localhost:3000/example/influencers-and-admin
+Content-Type: application/json
+
+###
+
+### Rota para todos os usuários autenticados
+GET http://localhost:3000/example/all-users
+Content-Type: application/json
+
+###
+
+### Teste de autenticação
+GET http://localhost:3000/example/test-auth
+Content-Type: application/json
+
+###
+
+### Logout
+POST http://localhost:3000/auth/signout
+Content-Type: application/json
+
+###
+
+# ========================================
+# NOTAS IMPORTANTES
+# ========================================
+
+# ✅ VANTAGEM deste arquivo:
+#    - O VS Code REST Client mantém os cookies automaticamente
+#    - Basta fazer login uma vez e testar tudo em sequência
+#
+# ⚠️ IMPORTANTE:
+#    - Execute as requisições EM SEQUÊNCIA (uma após a outra)
+#    - Não feche e reabra o arquivo entre as requisições
+#    - Se o token expirar, faça login novamente
+#
+# 💡 DICA:
+#    - Use este arquivo para testes rápidos
+#    - Use test-admin-routes.http para testes isolados com token manual

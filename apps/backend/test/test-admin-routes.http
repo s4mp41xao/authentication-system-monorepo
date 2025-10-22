@@ -1,0 +1,201 @@
+### Testes das Novas Rotas Admin
+
+# ========================================
+# IMPORTANTE: AUTENTICAÇÃO
+# ========================================
+# 
+# Para testar estas rotas, você precisa estar autenticado como ORI.
+# 
+# PASSO 1: Faça login no arquivo test-auth.http:
+#   POST http://localhost:3000/auth/signin
+#   Body: { "email": "admin@ori.com", "password": "?cN^3Yyb/4@GkbH" }
+#
+# PASSO 2: Copie o 'token' do BODY da resposta (não do header!)
+#   Procure no response body: "token": "..."
+#
+# PASSO 3: Cole o valor do token na variável abaixo:
+@sessionToken = jLw9Ycf0pKvfmCkJvMyBtnjOLUCs9Urt
+#
+# EXEMPLO da resposta do login:
+# {
+#   "token": "taLdStEHaqXlSNW5GYXGfTwIiAiXGVot",  <- COPIE ESTE TOKEN
+#   "user": { ... }
+# }
+#
+# ========================================
+
+# ========================================
+# Dashboard ORI - Estatísticas
+# ========================================
+
+### Obter estatísticas do dashboard
+GET http://localhost:3000/admin/dashboard
+Content-Type: application/json
+Cookie: better-auth.session_token={{sessionToken}}
+
+###
+
+# ========================================
+# Influencers - Gerenciamento
+# ========================================
+
+### Listar todos os influencers
+GET http://localhost:3000/admin/influencers
+Content-Type: application/json
+Cookie: better-auth.session_token={{sessionToken}}
+
+###
+
+# ========================================
+# Brands - Gerenciamento
+# ========================================
+
+### Listar todas as marcas
+GET http://localhost:3000/admin/brands
+Content-Type: application/json
+Cookie: better-auth.session_token={{sessionToken}}
+
+###
+
+# ========================================
+# Campanhas - Gerenciamento
+# ========================================
+
+### Listar todas as campanhas ativas
+GET http://localhost:3000/admin/campaigns
+Content-Type: application/json
+Cookie: better-auth.session_token={{sessionToken}}
+
+###
+
+### Criar nova campanha
+POST http://localhost:3000/admin/campaigns
+Content-Type: application/json
+Cookie: better-auth.session_token={{sessionToken}}
+
+{
+  "name": "Campanha Black Friday 2025",
+  "brandId": "ID_DA_MARCA_AQUI",
+  "description": "Campanha especial de Black Friday com grandes descontos",
+  "status": "active",
+  "budget": 75000,
+  "startDate": "2025-11-20T00:00:00.000Z",
+  "endDate": "2025-11-30T23:59:59.000Z"
+}
+
+###
+
+### Obter detalhes de uma campanha específica
+GET http://localhost:3000/admin/campaigns/ID_DA_CAMPANHA_AQUI
+Content-Type: application/json
+Cookie: better-auth.session_token={{sessionToken}}
+
+###
+
+### Atribuir influencer a uma campanha
+POST http://localhost:3000/admin/campaigns/ID_DA_CAMPANHA_AQUI/assign/ID_DO_INFLUENCER_AQUI
+Content-Type: application/json
+Cookie: better-auth.session_token={{sessionToken}}
+
+###
+
+# ========================================
+# Usuários - Gerenciamento (Admin)
+# ========================================
+
+### Criar novo usuário (admin pode criar qualquer role)
+POST http://localhost:3000/admin/users
+Content-Type: application/json
+Cookie: better-auth.session_token={{sessionToken}}
+
+{
+  "email": "novoadmin@example.com",
+  "password": "senha123",
+  "name": "Novo Administrador",
+  "role": "ORI"
+}
+
+###
+
+### Listar todos os usuários
+GET http://localhost:3000/admin/users
+Content-Type: application/json
+Cookie: better-auth.session_token={{sessionToken}}
+
+###
+
+### Atualizar role de um usuário
+PATCH http://localhost:3000/admin/users/ID_DO_USUARIO_AQUI/role
+Content-Type: application/json
+Cookie: better-auth.session_token={{sessionToken}}
+
+{
+  "role": "BRAND"
+}
+
+###
+
+### Deletar um usuário
+DELETE http://localhost:3000/admin/users/ID_DO_USUARIO_AQUI
+Content-Type: application/json
+Cookie: better-auth.session_token={{sessionToken}}
+
+###
+
+# ========================================
+# Rotas de Exemplo - Teste de Roles
+# ========================================
+
+### Rota apenas para ORI
+GET http://localhost:3000/example/admin-only
+Content-Type: application/json
+Cookie: better-auth.session_token={{sessionToken}}
+
+###
+
+### Rota para Brands e ORI
+GET http://localhost:3000/example/brands-and-admin
+Content-Type: application/json
+Cookie: better-auth.session_token={{sessionToken}}
+
+###
+
+### Rota para Influencers e ORI
+GET http://localhost:3000/example/influencers-and-admin
+Content-Type: application/json
+Cookie: better-auth.session_token={{sessionToken}}
+
+###
+
+### Rota para todos os usuários autenticados
+GET http://localhost:3000/example/all-users
+Content-Type: application/json
+Cookie: better-auth.session_token={{sessionToken}}
+
+###
+
+### Teste de autenticação
+GET http://localhost:3000/example/test-auth
+Content-Type: application/json
+Cookie: better-auth.session_token={{sessionToken}}
+
+###
+
+# ========================================
+# NOTAS IMPORTANTES
+# ========================================
+
+# 1. Todas as rotas /admin/* requerem autenticação como ORI
+# 2. Primeiro faça login como um usuário ORI antes de testar
+# 3. Os cookies de sessão são enviados automaticamente pelo VS Code REST Client
+# 4. Substitua os IDs de exemplo pelos IDs reais do seu banco de dados
+# 5. Para criar dados de teste, você pode usar os endpoints de criação
+
+# ========================================
+# Como testar (passo a passo):
+# ========================================
+
+# 1. Certifique-se de que o backend está rodando (npm run start:dev)
+# 2. Faça login como ORI usando o arquivo test-auth.http
+# 3. Execute as requisições acima na ordem desejada
+# 4. Os cookies de sessão serão mantidos entre as requisições

@@ -1,0 +1,52 @@
+### Testes com Token do Better Auth
+
+# O Better Auth retorna o token no body da resposta
+# Precisamos enviar esse token como cookie
+
+# Variável com o token
+@token = taLdStEHaqXlSNW5GYXGfTwIiAiXGVot
+
+# ========================================
+# Teste 1: Token como cookie (padrão Better Auth)
+# ========================================
+
+### Dashboard com cookie
+GET http://localhost:3000/admin/dashboard
+Content-Type: application/json
+Cookie: better-auth.session_token={{token}}
+
+###
+
+# ========================================
+# Teste 2: Token como Authorization header
+# ========================================
+
+### Dashboard com Bearer token
+GET http://localhost:3000/admin/dashboard
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+# ========================================
+# Teste 3: Múltiplos formatos
+# ========================================
+
+### Dashboard com ambos
+GET http://localhost:3000/admin/dashboard
+Content-Type: application/json
+Cookie: better-auth.session_token={{token}}
+Authorization: Bearer {{token}}
+
+###
+
+# ========================================
+# Debug: Ver se a requisição está chegando
+# ========================================
+
+### Rota de teste
+GET http://localhost:3000/example/test-auth
+Content-Type: application/json
+Cookie: better-auth.session_token={{token}}
+
+###
