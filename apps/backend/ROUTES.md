@@ -1,20 +1,23 @@
 # 📋 Lista Completa de Rotas do Backend
 
 ## 🌐 Root
+
 - `GET /` - Retorna mensagem de boas-vindas
 
 ---
 
 ## 🔐 Autenticação (`/auth`)
+
 Rotas públicas para gerenciamento de autenticação:
 
-| Método | Rota | Descrição | Guards |
-|--------|------|-----------|--------|
-| `POST` | `/auth/signup` | Registro de novo usuário | `PreventOriSignupGuard` |
-| `POST` | `/auth/signin` | Login de usuário | - |
-| `POST` | `/auth/signout` | Logout de usuário | - |
+| Método | Rota            | Descrição                | Guards                  |
+| ------ | --------------- | ------------------------ | ----------------------- |
+| `POST` | `/auth/signup`  | Registro de novo usuário | `PreventOriSignupGuard` |
+| `POST` | `/auth/signin`  | Login de usuário         | -                       |
+| `POST` | `/auth/signout` | Logout de usuário        | -                       |
 
 ### Body Examples:
+
 ```json
 // Signup
 {
@@ -34,30 +37,32 @@ Rotas públicas para gerenciamento de autenticação:
 ---
 
 ## 👑 Administração (`/admin`)
+
 **🔒 Todas as rotas protegidas - apenas ORI (administradores)**
 
 ### Dashboard e Estatísticas
 
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| `GET` | `/admin/dashboard` | Dashboard com estatísticas (campanhas ativas, influencers, marcas) |
+| Método | Rota               | Descrição                                                          |
+| ------ | ------------------ | ------------------------------------------------------------------ |
+| `GET`  | `/admin/dashboard` | Dashboard com estatísticas (campanhas ativas, influencers, marcas) |
 
 ### Gerenciamento de Usuários
 
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| `POST` | `/admin/users` | Criar novo usuário (incluindo ORIs) |
-| `GET` | `/admin/users` | Listar todos os usuários |
-| `PATCH` | `/admin/users/:id/role` | Atualizar role de um usuário |
-| `DELETE` | `/admin/users/:id` | Remover um usuário |
+| Método   | Rota                    | Descrição                           |
+| -------- | ----------------------- | ----------------------------------- |
+| `POST`   | `/admin/users`          | Criar novo usuário (incluindo ORIs) |
+| `GET`    | `/admin/users`          | Listar todos os usuários            |
+| `PATCH`  | `/admin/users/:id/role` | Atualizar role de um usuário        |
+| `DELETE` | `/admin/users/:id`      | Remover um usuário                  |
 
 ### Gerenciamento de Influencers
 
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| `GET` | `/admin/influencers` | Listar todos os influencers registrados |
+| Método | Rota                 | Descrição                               |
+| ------ | -------------------- | --------------------------------------- |
+| `GET`  | `/admin/influencers` | Listar todos os influencers registrados |
 
 **Response Example:**
+
 ```json
 {
   "message": "Lista de todos os influencers registrados",
@@ -83,11 +88,12 @@ Rotas públicas para gerenciamento de autenticação:
 
 ### Gerenciamento de Marcas
 
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| `GET` | `/admin/brands` | Listar todas as marcas registradas |
+| Método | Rota            | Descrição                          |
+| ------ | --------------- | ---------------------------------- |
+| `GET`  | `/admin/brands` | Listar todas as marcas registradas |
 
 **Response Example:**
+
 ```json
 {
   "message": "Lista de todas as marcas registradas",
@@ -111,14 +117,15 @@ Rotas públicas para gerenciamento de autenticação:
 
 ### Gerenciamento de Campanhas
 
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| `GET` | `/admin/campaigns` | Listar todas as campanhas ativas |
-| `GET` | `/admin/campaigns/:id` | Detalhes de uma campanha específica |
-| `POST` | `/admin/campaigns` | Criar nova campanha |
-| `POST` | `/admin/campaigns/:campaignId/assign/:influencerId` | Atribuir influencer a campanha |
+| Método | Rota                                                | Descrição                           |
+| ------ | --------------------------------------------------- | ----------------------------------- |
+| `GET`  | `/admin/campaigns`                                  | Listar todas as campanhas ativas    |
+| `GET`  | `/admin/campaigns/:id`                              | Detalhes de uma campanha específica |
+| `POST` | `/admin/campaigns`                                  | Criar nova campanha                 |
+| `POST` | `/admin/campaigns/:campaignId/assign/:influencerId` | Atribuir influencer a campanha      |
 
 **Create Campaign Body:**
+
 ```json
 {
   "name": "Campanha Verão 2025",
@@ -134,39 +141,43 @@ Rotas públicas para gerenciamento de autenticação:
 ---
 
 ## 🧪 Exemplos (`/example`)
+
 Rotas de exemplo para demonstrar controle de acesso por roles:
 
-| Método | Rota | Roles Permitidos | Descrição |
-|--------|------|------------------|-----------|
-| `GET` | `/example/admin-only` | `ORI` | Apenas administradores |
-| `GET` | `/example/brands-and-admin` | `BRAND`, `ORI` | Marcas e administradores |
-| `GET` | `/example/influencers-and-admin` | `INFLUENCER`, `ORI` | Influencers e administradores |
-| `GET` | `/example/all-users` | `INFLUENCER`, `BRAND`, `ORI` | Todos os usuários autenticados |
-| `GET` | `/example/test-auth` | `INFLUENCER`, `BRAND`, `ORI` | Teste de autenticação |
+| Método | Rota                             | Roles Permitidos             | Descrição                      |
+| ------ | -------------------------------- | ---------------------------- | ------------------------------ |
+| `GET`  | `/example/admin-only`            | `ORI`                        | Apenas administradores         |
+| `GET`  | `/example/brands-and-admin`      | `BRAND`, `ORI`               | Marcas e administradores       |
+| `GET`  | `/example/influencers-and-admin` | `INFLUENCER`, `ORI`          | Influencers e administradores  |
+| `GET`  | `/example/all-users`             | `INFLUENCER`, `BRAND`, `ORI` | Todos os usuários autenticados |
+| `GET`  | `/example/test-auth`             | `INFLUENCER`, `BRAND`, `ORI` | Teste de autenticação          |
 
 ---
 
 ## 👥 Roles Disponíveis
 
-| Role | Descrição |
-|------|-----------|
-| `ORI` | Administrador do sistema |
-| `BRAND` | Marca/Empresa |
-| `INFLUENCER` | Influenciador |
+| Role         | Descrição                |
+| ------------ | ------------------------ |
+| `ORI`        | Administrador do sistema |
+| `BRAND`      | Marca/Empresa            |
+| `INFLUENCER` | Influenciador            |
 
 ---
 
 ## 🔒 Autenticação e Autorização
 
 ### Middleware Global
+
 - `AuthMiddleware` - Aplicado em todas as rotas (`*`)
 
 ### Guards por Controller
+
 - `/auth/*` - Rotas públicas (exceto signup que tem `PreventOriSignupGuard`)
 - `/admin/*` - `RolesGuard` + `@Roles(UserRole.ORI)`
 - `/example/*` - `RolesGuard` + `@Roles(...)` conforme a rota
 
 ### Como Funciona
+
 1. Todas as requisições passam pelo `AuthMiddleware`
 2. O middleware verifica e anexa informações do usuário à requisição
 3. Os Guards verificam se o usuário tem as roles necessárias
@@ -176,17 +187,18 @@ Rotas de exemplo para demonstrar controle de acesso por roles:
 
 ## 📊 Status de Campanhas
 
-| Status | Descrição |
-|--------|-----------|
-| `active` | Campanha ativa e em execução |
-| `inactive` | Campanha temporariamente inativa |
-| `completed` | Campanha finalizada |
+| Status      | Descrição                        |
+| ----------- | -------------------------------- |
+| `active`    | Campanha ativa e em execução     |
+| `inactive`  | Campanha temporariamente inativa |
+| `completed` | Campanha finalizada              |
 
 ---
 
 ## 🗄️ Schemas do Banco de Dados
 
 ### Influencer
+
 ```typescript
 {
   userId: string;
@@ -204,6 +216,7 @@ Rotas de exemplo para demonstrar controle de acesso por roles:
 ```
 
 ### Brand
+
 ```typescript
 {
   userId: string;
@@ -219,6 +232,7 @@ Rotas de exemplo para demonstrar controle de acesso por roles:
 ```
 
 ### Campaign
+
 ```typescript
 {
   name: string;

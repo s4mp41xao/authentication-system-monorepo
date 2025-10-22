@@ -94,13 +94,11 @@ export class AdminController {
    */
   @Get('dashboard')
   async getDashboard() {
-    const [activeCampaigns, totalInfluencers, totalBrands] = await Promise.all(
-      [
-        this.campaignService.countActive(),
-        this.influencerService.count(),
-        this.brandService.count(),
-      ],
-    );
+    const [activeCampaigns, totalInfluencers, totalBrands] = await Promise.all([
+      this.campaignService.countActive(),
+      this.influencerService.count(),
+      this.brandService.count(),
+    ]);
 
     return {
       message: 'Dashboard administrativo',
@@ -194,8 +192,10 @@ export class AdminController {
     @Param('campaignId') campaignId: string,
     @Param('influencerId') influencerId: string,
   ) {
-    const campaign =
-      await this.campaignService.assignInfluencer(campaignId, influencerId);
+    const campaign = await this.campaignService.assignInfluencer(
+      campaignId,
+      influencerId,
+    );
     return {
       message: 'Influencer atribuído à campanha com sucesso',
       data: campaign,

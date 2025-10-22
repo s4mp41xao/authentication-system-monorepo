@@ -79,7 +79,9 @@ export class AuthMiddleware implements NestMiddleware {
             await client.connect();
 
             const db = client.db();
-            const sessionDoc = await db.collection('session').findOne({ token });
+            const sessionDoc = await db
+              .collection('session')
+              .findOne({ token });
 
             if (sessionDoc && sessionDoc.userId) {
               const userId =
@@ -87,7 +89,9 @@ export class AuthMiddleware implements NestMiddleware {
                   ? new ObjectId(sessionDoc.userId)
                   : sessionDoc.userId;
 
-              const userDoc = await db.collection('user').findOne({ _id: userId });
+              const userDoc = await db
+                .collection('user')
+                .findOne({ _id: userId });
 
               if (userDoc) {
                 const user = {
@@ -98,7 +102,12 @@ export class AuthMiddleware implements NestMiddleware {
                 };
 
                 if (process.env.NODE_ENV !== 'production') {
-                  console.log('✅ Usuário do MongoDB:', user.email, 'Role:', user.role);
+                  console.log(
+                    '✅ Usuário do MongoDB:',
+                    user.email,
+                    'Role:',
+                    user.role,
+                  );
                 }
                 (req as any).user = user;
 

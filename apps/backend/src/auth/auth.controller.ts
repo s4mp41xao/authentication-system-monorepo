@@ -25,9 +25,9 @@ export class AuthController {
   @Post('signin')
   async login(@Body() signinDto: SigninDto, @Req() req, @Res() res) {
     const auth = await createAuth();
-    
+
     console.log('🔐 Tentando fazer login com:', signinDto.email);
-    
+
     const result = await auth.api.signInEmail({
       body: {
         email: signinDto.email,

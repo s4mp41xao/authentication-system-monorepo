@@ -30,6 +30,7 @@ Content-Type: application/json
 ```
 
 **Agora você verá na resposta:**
+
 - No body: `{ "token": "...", "user": {...} }`
 - **NO HEADER:** `Set-Cookie: better-auth.session_token=...`
 
@@ -62,7 +63,7 @@ No terminal do backend você deve ver:
 
 Se o problema persistir, pode ser que o Better Auth esteja usando um formato diferente de sessão. Nesse caso:
 
-1. **Faça login** 
+1. **Faça login**
 2. **Copie o token** do body
 3. **Use diretamente** no banco de dados
 

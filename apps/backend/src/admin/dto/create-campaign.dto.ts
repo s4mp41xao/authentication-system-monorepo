@@ -1,4 +1,10 @@
-import { IsString, IsOptional, IsNumber, IsDate, IsEnum } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsNumber,
+  IsDate,
+  IsEnum,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { CampaignStatus } from '../schemas/campaign.schema';
 

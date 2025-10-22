@@ -59,10 +59,10 @@ export const AdminDashboard = () => {
   return (
     <div className="dashboard-container">
       <h1>Dashboard Administrativo</h1>
-      
+
       <div className="stats-grid">
         {/* Card Campanhas Ativas */}
-        <div 
+        <div
           className="stat-card clickable"
           onClick={() => navigate('/admin/campaigns')}
         >
@@ -72,7 +72,7 @@ export const AdminDashboard = () => {
         </div>
 
         {/* Card Influencers */}
-        <div 
+        <div
           className="stat-card clickable"
           onClick={() => navigate('/admin/influencers')}
         >
@@ -82,7 +82,7 @@ export const AdminDashboard = () => {
         </div>
 
         {/* Card Marcas */}
-        <div 
+        <div
           className="stat-card clickable"
           onClick={() => navigate('/admin/brands')}
         >
@@ -153,7 +153,7 @@ export const InfluencersListPage = () => {
     <div className="page-container">
       <h1>Influencers Registrados</h1>
       <p>Total: {influencers.length}</p>
-      
+
       <table className="data-table">
         <thead>
           <tr>
@@ -233,7 +233,7 @@ export const BrandsListPage = () => {
     <div className="page-container">
       <h1>Marcas Registradas</h1>
       <p>Total: {brands.length}</p>
-      
+
       <table className="data-table">
         <thead>
           <tr>
@@ -322,7 +322,7 @@ export const CampaignsListPage = () => {
       <p className="note">
         💡 Funcionalidade de atribuir campanhas a influencers será implementada em breve
       </p>
-      
+
       <table className="data-table">
         <thead>
           <tr>
@@ -341,7 +341,7 @@ export const CampaignsListPage = () => {
               <td>{campaign.name}</td>
               <td>{campaign.description || '-'}</td>
               <td>
-                {campaign.budget 
+                {campaign.budget
                   ? new Intl.NumberFormat('pt-BR', {
                       style: 'currency',
                       currency: 'BRL',
@@ -349,12 +349,12 @@ export const CampaignsListPage = () => {
                   : '-'}
               </td>
               <td>
-                {campaign.startDate 
+                {campaign.startDate
                   ? new Date(campaign.startDate).toLocaleDateString('pt-BR')
                   : '-'}
               </td>
               <td>
-                {campaign.endDate 
+                {campaign.endDate
                   ? new Date(campaign.endDate).toLocaleDateString('pt-BR')
                   : '-'}
               </td>
@@ -410,7 +410,9 @@ import { CampaignsListPage } from './pages/admin/CampaignsListPage';
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
 .stat-card.clickable {
@@ -517,13 +519,13 @@ export const ProtectedRoute = ({ children, allowedRoles, user }: ProtectedRouteP
 };
 
 // Uso:
-<Route 
-  path="/admin/dashboard" 
+<Route
+  path="/admin/dashboard"
   element={
     <ProtectedRoute user={currentUser} allowedRoles={['ORI']}>
       <AdminDashboard />
     </ProtectedRoute>
-  } 
+  }
 />
 ```
 

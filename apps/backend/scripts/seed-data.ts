@@ -8,18 +8,18 @@ dotenv.config();
 
 const seedData = async () => {
   const client = new MongoClient(process.env.DATABASE_URL!);
-  
+
   try {
     await client.connect();
     console.log('✅ Conectado ao MongoDB');
-    
+
     const db = client.db();
-    
+
     // Limpar dados existentes (opcional - comente se não quiser limpar)
     // await db.collection('influencers').deleteMany({});
     // await db.collection('brands').deleteMany({});
     // await db.collection('campaigns').deleteMany({});
-    
+
     // Seed Influencers
     const influencers = [
       {
@@ -88,10 +88,12 @@ const seedData = async () => {
         updatedAt: new Date(),
       },
     ];
-    
-    const influencersResult = await db.collection('influencers').insertMany(influencers);
+
+    const influencersResult = await db
+      .collection('influencers')
+      .insertMany(influencers);
     console.log(`✅ ${influencersResult.insertedCount} influencers inseridos`);
-    
+
     // Seed Brands
     const brands = [
       {
@@ -150,14 +152,17 @@ const seedData = async () => {
         updatedAt: new Date(),
       },
     ];
-    
+
     const brandsResult = await db.collection('brands').insertMany(brands);
     console.log(`✅ ${brandsResult.insertedCount} marcas inseridas`);
-    
+
     // Pegar IDs inseridos para usar nas campanhas
-    const insertedInfluencers = await db.collection('influencers').find().toArray();
+    const insertedInfluencers = await db
+      .collection('influencers')
+      .find()
+      .toArray();
     const insertedBrands = await db.collection('brands').find().toArray();
-    
+
     // Seed Campaigns
     const campaigns = [
       {
@@ -247,16 +252,17 @@ const seedData = async () => {
         updatedAt: new Date(),
       },
     ];
-    
-    const campaignsResult = await db.collection('campaigns').insertMany(campaigns);
+
+    const campaignsResult = await db
+      .collection('campaigns')
+      .insertMany(campaigns);
     console.log(`✅ ${campaignsResult.insertedCount} campanhas inseridas`);
-    
+
     console.log('\n🎉 Seed concluído com sucesso!');
     console.log('\n📊 Resumo:');
     console.log(`   - ${influencersResult.insertedCount} Influencers`);
     console.log(`   - ${brandsResult.insertedCount} Marcas`);
     console.log(`   - ${campaignsResult.insertedCount} Campanhas`);
-    
   } catch (error) {
     console.error('❌ Erro ao fazer seed:', error);
   } finally {

@@ -46,6 +46,7 @@ Content-Type: application/json
 ## 📊 Logs Esperados
 
 ### No Login:
+
 ```
 🔐 Tentando fazer login com: admin@ori.com
 ✅ Login bem-sucedido: {
@@ -57,6 +58,7 @@ Content-Type: application/json
 ```
 
 ### Na Requisição Admin:
+
 ```
 🔍 Headers recebidos: better-auth.session_token=...
 🔍 Sessão retornada: null
@@ -96,6 +98,7 @@ Content-Type: application/json
 ## 🎉 AGORA VAI FUNCIONAR!
 
 Esta solução é robusta porque:
+
 - ✅ Tenta primeiro com Better Auth (método oficial)
 - ✅ Se falhar, vai direto ao banco (garantido)
 - ✅ Não afeta rotas públicas
@@ -106,6 +109,7 @@ Esta solução é robusta porque:
 Depois que funcionar, você pode:
 
 1. **Popular com dados de teste:**
+
    ```bash
    npm run seed-data
    ```

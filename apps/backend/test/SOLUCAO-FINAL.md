@@ -14,9 +14,7 @@ Modifiquei o `RolesGuard` para fazer **comparação case-insensitive**:
 ```typescript
 // Agora compara 'ori' com 'ORI' e funciona!
 const userRole = user.role.toUpperCase();
-const hasAccess = requiredRoles.some(
-  (role) => userRole === role.toUpperCase(),
-);
+const hasAccess = requiredRoles.some((role) => userRole === role.toUpperCase());
 ```
 
 ## 🚀 Teste Agora!
@@ -93,8 +91,9 @@ npm run seed-data
 ```
 
 Isso vai criar:
+
 - 5 influencers
-- 5 marcas  
+- 5 marcas
 - 6 campanhas ativas
 
 E você poderá testar todas as rotas com dados reais!

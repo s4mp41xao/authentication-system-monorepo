@@ -7,16 +7,19 @@ O cookie está sendo enviado corretamente, mas o Better Auth retorna `session: n
 ## 🚀 Correções Aplicadas
 
 ### 1. **Instância do Auth Corrigida**
-   - Agora armazena a instância completa do `auth` (não apenas `api`)
-   - Adicionada configuração de sessão explícita
+
+- Agora armazena a instância completa do `auth` (não apenas `api`)
+- Adicionada configuração de sessão explícita
 
 ### 2. **Logs Melhorados**
-   - Login mostra: userId, email, role, token
-   - Middleware mostra: headers completos, sessão retornada
+
+- Login mostra: userId, email, role, token
+- Middleware mostra: headers completos, sessão retornada
 
 ### 3. **Script de Verificação**
-   - Novo comando: `npm run check-sessions`
-   - Verifica collections, sessões e usuários no banco
+
+- Novo comando: `npm run check-sessions`
+- Verifica collections, sessões e usuários no banco
 
 ## 🧪 Como Testar Agora
 
@@ -37,6 +40,7 @@ npm run check-sessions
 ```
 
 Você verá:
+
 - Collections existentes
 - Sessões salvas
 - Usuários cadastrados
@@ -103,6 +107,7 @@ Content-Type: application/json
 Se ao executar `npm run check-sessions` você não ver uma collection chamada `session`, o Better Auth pode estar usando outro nome.
 
 **Solução:**
+
 1. Execute o script: `npm run check-sessions`
 2. Veja quais collections existem
 3. Se houver algo como `sessions` (plural) ou `_session`, me avise
@@ -112,6 +117,7 @@ Se ao executar `npm run check-sessions` você não ver uma collection chamada `s
 Se após fazer login, o script não mostrar nenhuma sessão:
 
 **Solução:**
+
 1. Verifique se o `BETTER_AUTH_SECRET` no `.env` está configurado
 2. Verifique se a conexão com o MongoDB está OK
 3. Tente fazer logout e login novamente

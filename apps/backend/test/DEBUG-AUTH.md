@@ -37,9 +37,10 @@ Content-Type: application/json
 ```
 
 **Copie o token do response:**
+
 ```json
 {
-  "token": "SEU_TOKEN_AQUI"  // <- Copie isso
+  "token": "SEU_TOKEN_AQUI" // <- Copie isso
 }
 ```
 
@@ -67,6 +68,7 @@ Quando você executar a requisição, verá logs como:
 ```
 
 **Se der erro:**
+
 ```
 🔍 Headers recebidos: better-auth.session_token=SEU_TOKEN_AQUI
 🔍 Sessão encontrada: Não
@@ -76,32 +78,40 @@ Quando você executar a requisição, verá logs como:
 ## 🐛 Problemas Possíveis
 
 ### Problema 1: Token Inválido
+
 **Sintoma:** Logs mostram "Sessão encontrada: Não"
 
 **Solução:**
+
 1. Faça logout: `POST /auth/signout`
 2. Faça login novamente
 3. Copie o novo token
 
 ### Problema 2: Token Copiado Incorretamente
+
 **Sintoma:** Erro 403 ou sessão não encontrada
 
 **Solução:**
+
 - Certifique-se de copiar APENAS o token (sem aspas, espaços ou caracteres extras)
 - Exemplo correto: `taLdStEHaqXlSNW5GYXGfTwIiAiXGVot`
 - Exemplo errado: `"taLdStEHaqXlSNW5GYXGfTwIiAiXGVot"` (com aspas)
 
 ### Problema 3: Cookie Não Está Sendo Enviado
+
 **Sintoma:** Logs mostram "Headers recebidos: undefined"
 
 **Solução:**
+
 - Verifique se a linha `Cookie: better-auth.session_token={{sessionToken}}` está presente
 - Certifique-se de que a variável `@sessionToken` está definida
 
 ### Problema 4: Usuário Não Tem Role ORI
+
 **Sintoma:** Logs mostram usuário, mas erro 403
 
 **Solução:**
+
 - Verifique no log: `👤 Usuário: ... Role: ...`
 - Se o role não for "ORI", você não tem permissão
 - Use `npm run create-admin` para criar um admin

@@ -5,9 +5,11 @@ Este documento descreve as rotas disponíveis para administradores (role ORI) no
 ## 📊 Dashboard
 
 ### GET `/admin/dashboard`
+
 Retorna estatísticas gerais do sistema para o painel administrativo.
 
 **Response:**
+
 ```json
 {
   "message": "Dashboard administrativo",
@@ -22,9 +24,11 @@ Retorna estatísticas gerais do sistema para o painel administrativo.
 ## 👥 Gerenciamento de Influencers
 
 ### GET `/admin/influencers`
+
 Lista todos os influencers registrados no sistema.
 
 **Response:**
+
 ```json
 {
   "message": "Lista de todos os influencers registrados",
@@ -51,9 +55,11 @@ Lista todos os influencers registrados no sistema.
 ## 🏢 Gerenciamento de Marcas
 
 ### GET `/admin/brands`
+
 Lista todas as marcas registradas no sistema.
 
 **Response:**
+
 ```json
 {
   "message": "Lista de todas as marcas registradas",
@@ -78,9 +84,11 @@ Lista todas as marcas registradas no sistema.
 ## 📢 Gerenciamento de Campanhas
 
 ### GET `/admin/campaigns`
+
 Lista todas as campanhas ativas no sistema.
 
 **Response:**
+
 ```json
 {
   "message": "Lista de todas as campanhas ativas",
@@ -105,12 +113,15 @@ Lista todas as campanhas ativas no sistema.
 ```
 
 ### GET `/admin/campaigns/:id`
+
 Retorna detalhes de uma campanha específica.
 
 **Parameters:**
+
 - `id` - ID da campanha
 
 **Response:**
+
 ```json
 {
   "message": "Detalhes da campanha",
@@ -129,9 +140,11 @@ Retorna detalhes de uma campanha específica.
 ```
 
 ### POST `/admin/campaigns`
+
 Cria uma nova campanha.
 
 **Request Body:**
+
 ```json
 {
   "name": "Nova Campanha",
@@ -145,6 +158,7 @@ Cria uma nova campanha.
 ```
 
 **Response:**
+
 ```json
 {
   "message": "Campanha criada com sucesso",
@@ -163,20 +177,26 @@ Cria uma nova campanha.
 ```
 
 ### POST `/admin/campaigns/:campaignId/assign/:influencerId`
+
 Atribui um influencer a uma campanha específica.
 
 **Parameters:**
+
 - `campaignId` - ID da campanha
 - `influencerId` - ID do influencer
 
 **Response:**
+
 ```json
 {
   "message": "Influencer atribuído à campanha com sucesso",
   "data": {
     "_id": "507f1f77bcf86cd799439013",
     "name": "Campanha Verão 2025",
-    "assignedInfluencers": ["507f1f77bcf86cd799439011", "507f1f77bcf86cd799439015"]
+    "assignedInfluencers": [
+      "507f1f77bcf86cd799439011",
+      "507f1f77bcf86cd799439015"
+    ]
   }
 }
 ```
@@ -184,9 +204,11 @@ Atribui um influencer a uma campanha específica.
 ## 👤 Gerenciamento de Usuários
 
 ### POST `/admin/users`
+
 Cria um novo usuário com qualquer role (incluindo ORI).
 
 **Request Body:**
+
 ```json
 {
   "email": "novo@example.com",
@@ -197,6 +219,7 @@ Cria um novo usuário com qualquer role (incluindo ORI).
 ```
 
 **Response:**
+
 ```json
 {
   "message": "Usuário criado com sucesso",
@@ -210,15 +233,19 @@ Cria um novo usuário com qualquer role (incluindo ORI).
 ```
 
 ### GET `/admin/users`
+
 Lista todos os usuários do sistema.
 
 ### PATCH `/admin/users/:id/role`
+
 Atualiza o role de um usuário específico.
 
 **Parameters:**
+
 - `id` - ID do usuário
 
 **Request Body:**
+
 ```json
 {
   "role": "BRAND"
@@ -226,20 +253,24 @@ Atualiza o role de um usuário específico.
 ```
 
 ### DELETE `/admin/users/:id`
+
 Remove um usuário do sistema.
 
 **Parameters:**
+
 - `id` - ID do usuário
 
 ## 🔐 Autenticação
 
 Todas as rotas `/admin/*` são protegidas e requerem:
+
 1. Token de autenticação válido
 2. Role ORI (administrador)
 
 ## 📝 Status de Campanha
 
 Os status disponíveis para campanhas são:
+
 - `active` - Campanha ativa
 - `inactive` - Campanha inativa
 - `completed` - Campanha concluída

@@ -1,6 +1,7 @@
 # 🔐 Como Testar Rotas Protegidas no VS Code REST Client
 
 ## Problema
+
 O VS Code REST Client não compartilha cookies automaticamente entre diferentes arquivos `.http`, então você precisa passar o token manualmente.
 
 ## 📋 Solução: Passo a Passo
@@ -27,7 +28,7 @@ Após executar o login, você verá uma resposta **NO BODY** (não no header):
 ```json
 {
   "redirect": false,
-  "token": "taLdStEHaqXlSNW5GYXGfTwIiAiXGVot",  // <- COPIE ESTE TOKEN
+  "token": "taLdStEHaqXlSNW5GYXGfTwIiAiXGVot", // <- COPIE ESTE TOKEN
   "user": {
     "id": "68f6481fe6f24c080f73ebb2",
     "email": "admin@ori.com",
@@ -71,6 +72,7 @@ Cookie: better-auth.session_token={{sessionToken}}
 ## 🎯 Exemplo Completo
 
 ### 1. Login (test-auth.http)
+
 ```http
 POST http://localhost:3000/auth/signin
 Content-Type: application/json
@@ -82,6 +84,7 @@ Content-Type: application/json
 ```
 
 **Resposta:**
+
 ```
 HTTP/1.1 200 OK
 Set-Cookie: better-auth.session_token=TOKEN_AQUI; Path=/; HttpOnly
@@ -96,11 +99,13 @@ Set-Cookie: better-auth.session_token=TOKEN_AQUI; Path=/; HttpOnly
 ```
 
 ### 2. Copiar Token
+
 ```
 TOKEN_AQUI = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
 ### 3. Usar Token (test-admin-routes.http)
+
 ```http
 @sessionToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
@@ -111,6 +116,7 @@ Cookie: better-auth.session_token={{sessionToken}}
 ```
 
 **Resposta esperada:**
+
 ```json
 {
   "message": "Dashboard administrativo",
@@ -127,6 +133,7 @@ Cookie: better-auth.session_token={{sessionToken}}
 ## ⚠️ Problemas Comuns
 
 ### Erro 403 Forbidden
+
 ```json
 {
   "message": "Forbidden resource",
@@ -136,17 +143,20 @@ Cookie: better-auth.session_token={{sessionToken}}
 ```
 
 **Causas:**
+
 1. ❌ Token não foi copiado corretamente
 2. ❌ Token expirou (faça login novamente)
 3. ❌ Usuário não tem role ORI
 4. ❌ Variável `@sessionToken` não foi definida
 
 **Solução:**
+
 - Refaça o login e copie um novo token
 - Verifique se copiou o token completo (sem espaços extras)
 - Certifique-se de que está logado com um usuário ORI
 
 ### Erro 401 Unauthorized
+
 ```json
 {
   "message": "Unauthorized",
@@ -157,11 +167,14 @@ Cookie: better-auth.session_token={{sessionToken}}
 **Causa:** Token inválido ou não foi enviado
 
 **Solução:**
+
 - Verifique se a linha `Cookie: better-auth.session_token={{sessionToken}}` está presente
 - Faça login novamente e pegue um novo token
 
 ### Token Expirado
+
 Os tokens do Better Auth têm validade limitada. Se você receber erro 401 depois de algum tempo:
+
 1. Faça login novamente
 2. Copie o novo token
 3. Atualize a variável `@sessionToken`
