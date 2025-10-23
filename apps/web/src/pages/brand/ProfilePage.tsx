@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router'
 import { ArrowLeft } from 'lucide-react'
-import { adminService, type BrandProfileResponse } from '../../services/adminService'
- 
+import {
+  adminService,
+  type BrandProfileResponse
+} from '../../services/adminService'
 
 type ProfileData = BrandProfileResponse
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate, useSearchParams } from 'react-router'
+import { influencerService } from '../../services/influencerService'
 
 interface InfluencerProfile {
   _id: string
@@ -94,16 +95,7 @@ export default function InfluencerProfilePage() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
-        const response = await fetch(`${API_URL}/influencer/profile/${id}`, {
-          credentials: 'include'
-        })
-
-        if (!response.ok) {
-          throw new Error('Erro ao carregar perfil do influencer')
-        }
-
-        const data = await response.json()
+        const data = await influencerService.getProfile(id!)
         setProfileData(data)
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Erro ao carregar perfil')

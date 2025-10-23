@@ -190,9 +190,7 @@ export const adminService = {
 
     const data = await response.json()
     return data.data
-  }
-  ,
-
+  },
   async getBrandProfile(brandId: string): Promise<BrandProfileResponse> {
     const user = localStorage.getItem('user')
     const token = user ? JSON.parse(user).token : null

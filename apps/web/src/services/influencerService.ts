@@ -6,6 +6,8 @@ console.log(
 )
 
 export interface InfluencerProfile {
+  _id?: string
+  userId?: string
   name: string
   email: string
   instagram?: string
@@ -66,8 +68,20 @@ export const influencerService = {
   },
 
   async getCampaigns(): Promise<CampaignWithBrand[]> {
+    const user = localStorage.getItem('user')
+    const token = user ? JSON.parse(user).token : null
+
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json'
+    }
+
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`
+    }
+
     const response = await fetch(`${API_URL}/influencer/campaigns`, {
-      credentials: 'include'
+      credentials: 'include',
+      headers
     })
 
     if (!response.ok) {
@@ -76,5 +90,32 @@ export const influencerService = {
 
     const data = await response.json()
     return data.data
+  },
+
+  async getProfile(influencerId: string): Promise<{
+    profile: InfluencerProfile
+    stats: { assignedCampaigns: number; campaigns: Array<{ name: string; budget: number; startDate: string; endDate: string; status: string }> }
+  }> {
+    const user = localStorage.getItem('user')
+    const token = user ? JSON.parse(user).token : null
+
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json'
+    }
+
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`
+    }
+
+    const response = await fetch(`${API_URL}/influencer/profile/${influencerId}`, {
+      credentials: 'include',
+      headers
+    })
+
+    if (!response.ok) {
+      throw new Error('Erro ao carregar perfil do influencer')
+    }
+
+    return response.json()
   }
 }
