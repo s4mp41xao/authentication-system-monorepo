@@ -1,0 +1,50 @@
+# Vercel Ignore File
+# Files and directories to ignore during deployment
+
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Testing
+coverage
+*.log
+
+# Development
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts (will be rebuilt by Vercel)
+dist
+build
+.next
+out
+
+# Git
+.git
+.gitignore
+
+# Documentation (optional - uncomment if you don't want to deploy docs)
+# *.md
+# docs/
+
+# Test files
+test/
+*.spec.ts
+*.test.ts
+*.spec.tsx
+*.test.tsx
