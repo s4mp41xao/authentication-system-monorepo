@@ -28,7 +28,6 @@ async function recreateAdmin() {
     console.log('   Password: (escolha uma senha forte)');
     console.log('   Name: Administrador ORI');
     console.log('   Role: ori\n');
-
   } catch (error) {
     console.error('❌ Erro:', error);
     throw error;
