@@ -111,52 +111,21 @@ export class AuthController {
       // Fazer signin automático para criar a sessão
       console.log('🔐 Fazendo signin automático após signup...');
 
-      // Criar um objeto Request fake para o signin interno
-      const signinResult = await auth.api.signInEmail({
+      // Fazer signin direto (sem asResponse)
+      const signinData = await auth.api.signInEmail({
         body: {
           email: signupDto.email,
           password: signupDto.password,
         },
-        headers: req.headers as any,
-        asResponse: true, // Força retornar como Response com headers
       });
 
       console.log('✅ Signin automático executado:', {
-        status: signinResult.status,
-        hasBody: !!signinResult.body,
+        hasSession: !!signinData.session,
+        sessionToken: signinData.session?.token ? '✅ Present' : '❌ Missing',
+        userId: signinData.user?.id,
       });
 
-      // Extrair o corpo da resposta
-      let signinData;
-      try {
-        const responseText = await signinResult.text();
-        signinData = JSON.parse(responseText);
-        console.log('✅ Dados do signin:', {
-          hasSession: !!signinData.session,
-          sessionToken: signinData.session?.token ? '✅ Present' : '❌ Missing',
-        });
-      } catch (e) {
-        console.error('❌ Erro ao parsear resposta do signin:', e);
-        signinData = {};
-      }
-
-      // Copiar cookies da resposta do signin para a resposta atual
-      const setCookieHeaders = signinResult.headers.getSetCookie
-        ? signinResult.headers.getSetCookie()
-        : signinResult.headers.get('set-cookie');
-
-      if (setCookieHeaders) {
-        console.log('🍪 Copiando cookies do signin para a resposta');
-        if (Array.isArray(setCookieHeaders)) {
-          setCookieHeaders.forEach((cookie) =>
-            res.append('Set-Cookie', cookie),
-          );
-        } else {
-          res.setHeader('Set-Cookie', setCookieHeaders);
-        }
-      }
-
-      // Usar o resultado do signin ao invés do signup para ter a sessão
+      // Usar o resultado do signin
       const finalResult = signinData;
 
       // Buscar o usuário completo do MongoDB para garantir que o role está presente
