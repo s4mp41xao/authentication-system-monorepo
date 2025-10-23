@@ -28,12 +28,6 @@ coverage
 .DS_Store
 Thumbs.db
 
-# Build artifacts (will be rebuilt by Vercel)
-dist
-build
-.next
-out
-
 # Git
 .git
 .gitignore
