@@ -6,7 +6,6 @@ import { UserRole } from '../../types'
 import type { SignupDto } from '../../types'
 
 export function SignupPage() {
-
   const [formData, setFormData] = useState<SignupDto>({
     name: '',
     email: '',
@@ -68,12 +67,13 @@ export function SignupPage() {
 
       // Forçar um refresh para garantir que os cookies sejam enviados corretamente
       // Isso é necessário em cross-origin com SameSite=None
-      window.location.href = response.user.role === UserRole.ORI 
-        ? '/admin/dashboard'
-        : response.user.role === UserRole.BRAND
-        ? '/brand/dashboard'
-        : '/influencer/dashboard'
-      
+      window.location.href =
+        response.user.role === UserRole.ORI
+          ? '/admin/dashboard'
+          : response.user.role === UserRole.BRAND
+            ? '/brand/dashboard'
+            : '/influencer/dashboard'
+
       return // Não executa o navigate abaixo
     } catch (err: any) {
       setError(err.message || 'Erro ao criar conta')
