@@ -59,12 +59,12 @@ export function BrandDashboard() {
   const loadDashboard = async () => {
     try {
       console.log('🔍 [Dashboard] Carregando dados do dashboard...')
-      
+
       // Usar brandService que inclui Authorization header
       const stats = await brandService.getDashboard()
       const influencers = await brandService.getInfluencers()
       const campaigns = await brandService.getCampaigns()
-      
+
       // Adaptar os dados para o formato esperado
       setDashboardData({
         profile: {
@@ -90,7 +90,7 @@ export function BrandDashboard() {
           assignedInfluencers: camp.assignedInfluencers.length
         }))
       })
-      
+
       console.log('✅ [Dashboard] Dados carregados com sucesso')
     } catch (err: any) {
       setError(err.message || 'Erro ao carregar dashboard')

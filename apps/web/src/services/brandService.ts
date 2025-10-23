@@ -1,7 +1,9 @@
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
 
 // FORCE REBUILD - v2.0.0 - Authorization Header Implementation
-console.log('🚀 [BrandService] Carregado com suporte a Authorization Header v2.0.0')
+console.log(
+  '🚀 [BrandService] Carregado com suporte a Authorization Header v2.0.0'
+)
 
 export interface BrandDashboardStats {
   activeCampaigns: number

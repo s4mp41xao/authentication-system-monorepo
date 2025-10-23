@@ -117,14 +117,20 @@ export class BrandController {
   async getDashboard(@Req() req) {
     const userId = req.user?.id;
 
+    console.log('🏢 [Brand Dashboard] Requisição recebida');
+    console.log('   User ID:', userId);
+    console.log('   User:', req.user);
+
     if (!userId) {
       throw new Error('Usuário não autenticado');
     }
 
     // Buscar perfil da marca
     const brandProfile = await this.brandService.findByUserId(userId);
+    console.log('   Brand Profile encontrado:', brandProfile ? 'SIM' : 'NÃO');
 
     if (!brandProfile) {
+      console.log('   ⚠️  Retornando dashboard vazio - Brand não encontrado');
       return {
         message: 'Dashboard da marca',
         profile: null,
@@ -141,6 +147,8 @@ export class BrandController {
     // Buscar todas as campanhas da marca
     const campaigns = await this.campaignService.findByBrandId(userId);
     const activeCampaigns = campaigns.filter((c) => c.status === 'active');
+    console.log('   Campanhas encontradas:', campaigns.length);
+    console.log('   Campanhas ativas:', activeCampaigns.length);
 
     // Buscar influencers únicos vinculados às campanhas
     const influencerIds = new Set<string>();
@@ -181,7 +189,7 @@ export class BrandController {
       };
     });
 
-    return {
+    const response = {
       message: 'Dashboard da marca',
       profile: {
         name: brandProfile.name,
@@ -205,6 +213,13 @@ export class BrandController {
       })),
       influencers: influencersWithCampaigns,
     };
+
+    console.log('✅ [Brand Dashboard] Retornando dados:');
+    console.log('   Stats:', response.stats);
+    console.log('   Campaigns:', response.campaigns.length);
+    console.log('   Influencers:', response.influencers.length);
+    
+    return response;
   }
 
   /**

@@ -17,7 +17,7 @@ async function createAdminUser() {
     // Dados do administrador
     const adminData = {
       email: 'admin@ori.com',
-      password: '?cN^3Yyb/4@GkbH',
+      password: 'Admin123!',
       name: 'Administrador ORI',
       role: 'ori',
       callbackURL: '/dashboard',
