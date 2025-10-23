@@ -38,8 +38,21 @@ export interface CampaignDetails {
 
 export const brandService = {
   async getDashboard(): Promise<BrandDashboardStats> {
+    // Extrair token do localStorage
+    const user = localStorage.getItem('user')
+    const token = user ? JSON.parse(user).token : null
+    
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    }
+    
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`
+    }
+
     const response = await fetch(`${API_URL}/brand/dashboard`, {
-      credentials: 'include'
+      credentials: 'include',
+      headers
     })
 
     if (!response.ok) {
@@ -51,8 +64,21 @@ export const brandService = {
   },
 
   async getInfluencers(): Promise<Influencer[]> {
+    // Extrair token do localStorage
+    const user = localStorage.getItem('user')
+    const token = user ? JSON.parse(user).token : null
+    
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    }
+    
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`
+    }
+
     const response = await fetch(`${API_URL}/brand/influencers`, {
-      credentials: 'include'
+      credentials: 'include',
+      headers
     })
 
     if (!response.ok) {
@@ -64,12 +90,25 @@ export const brandService = {
   },
 
   async getCampaigns(brandId?: string): Promise<Campaign[]> {
+    // Extrair token do localStorage
+    const user = localStorage.getItem('user')
+    const token = user ? JSON.parse(user).token : null
+    
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    }
+    
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`
+    }
+
     const url = brandId
       ? `${API_URL}/brand/campaigns?brandId=${brandId}`
       : `${API_URL}/brand/campaigns`
 
     const response = await fetch(url, {
-      credentials: 'include'
+      credentials: 'include',
+      headers
     })
 
     if (!response.ok) {
@@ -81,8 +120,21 @@ export const brandService = {
   },
 
   async getCampaignDetails(campaignId: string): Promise<CampaignDetails> {
+    // Extrair token do localStorage
+    const user = localStorage.getItem('user')
+    const token = user ? JSON.parse(user).token : null
+    
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    }
+    
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`
+    }
+
     const response = await fetch(`${API_URL}/brand/campaigns/${campaignId}`, {
-      credentials: 'include'
+      credentials: 'include',
+      headers
     })
 
     if (!response.ok) {

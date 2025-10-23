@@ -44,8 +44,21 @@ export interface Campaign {
 
 export const adminService = {
   async getDashboard(): Promise<DashboardStats> {
+    // Extrair token do localStorage
+    const user = localStorage.getItem('user')
+    const token = user ? JSON.parse(user).token : null
+    
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    }
+    
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`
+    }
+
     const response = await fetch(`${API_URL}/admin/dashboard`, {
-      credentials: 'include' // Importante para enviar cookies
+      credentials: 'include',
+      headers
     })
 
     if (!response.ok) {
@@ -57,8 +70,21 @@ export const adminService = {
   },
 
   async getInfluencers(): Promise<Influencer[]> {
+    // Extrair token do localStorage
+    const user = localStorage.getItem('user')
+    const token = user ? JSON.parse(user).token : null
+    
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    }
+    
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`
+    }
+
     const response = await fetch(`${API_URL}/admin/influencers`, {
-      credentials: 'include'
+      credentials: 'include',
+      headers
     })
 
     if (!response.ok) {
@@ -70,8 +96,21 @@ export const adminService = {
   },
 
   async getBrands(): Promise<Brand[]> {
+    // Extrair token do localStorage
+    const user = localStorage.getItem('user')
+    const token = user ? JSON.parse(user).token : null
+    
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    }
+    
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`
+    }
+
     const response = await fetch(`${API_URL}/admin/brands`, {
-      credentials: 'include'
+      credentials: 'include',
+      headers
     })
 
     if (!response.ok) {
@@ -83,8 +122,21 @@ export const adminService = {
   },
 
   async getCampaigns(): Promise<Campaign[]> {
+    // Extrair token do localStorage
+    const user = localStorage.getItem('user')
+    const token = user ? JSON.parse(user).token : null
+    
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    }
+    
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`
+    }
+
     const response = await fetch(`${API_URL}/admin/campaigns`, {
-      credentials: 'include'
+      credentials: 'include',
+      headers
     })
 
     if (!response.ok) {
