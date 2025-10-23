@@ -380,18 +380,23 @@ export class AuthController {
       email: userWithRole?.email,
       role: userWithRole?.role,
       token: result?.token ? 'presente' : 'ausente',
+      session: result?.session ? 'presente' : 'ausente',
+      sessionToken: result?.session?.token ? 'presente' : 'ausente',
     });
 
-    // Se o Better Auth retornou um cookie, definir explicitamente
-    if (result?.token) {
-      console.log('🍪 Definindo cookie com token:', result.token);
-      res.cookie('better-auth.session_token', result.token, {
+    // Se o Better Auth retornou um token de sessão, definir explicitamente
+    const sessionToken = result?.session?.token || result?.token;
+    if (sessionToken) {
+      console.log('🍪 Definindo cookie com token:', sessionToken);
+      res.cookie('better-auth.session_token', sessionToken, {
         httpOnly: true,
         secure: true, // SEMPRE true para sameSite=none
         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' para cross-origin em produção
         path: '/',
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 dias
       });
+    } else {
+      console.error('❌ ERRO: Better Auth não retornou token de sessão no signin!');
     }
 
     return res.json({ ...result, user: userWithRole });
