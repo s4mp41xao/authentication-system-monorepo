@@ -111,28 +111,68 @@ export class AuthController {
       // Fazer signin automático para criar a sessão
       console.log('🔐 Fazendo signin automático após signup...');
 
-      // Fazer signin direto (sem asResponse)
+      // Fazer signin COM contexto de request/response para criar sessão
       const signinData = await auth.api.signInEmail({
         body: {
           email: signupDto.email,
           password: signupDto.password,
         },
+        headers: req.headers as any,
+        asResponse: false, // Queremos os dados, não a Response
       });
 
       console.log('✅ Signin automático executado:', {
         hasSession: !!signinData.session,
-        sessionToken: signinData.session?.token ? '✅ Present' : '❌ Missing',
+        hasToken: !!signinData.token,
+        sessionToken: signinData.session?.token || signinData.token || '❌ Missing',
         userId: signinData.user?.id,
       });
 
+      // Se não criou sessão, tentar criar manualmente
+      if (!signinData.session && !signinData.token) {
+        console.log('⚠️  Signin não criou sessão, tentando criar manualmente...');
+        
+        // Criar sessão diretamente no MongoDB
+        const { MongoClient } = await import('mongodb');
+        const { randomBytes } = await import('crypto');
+        
+        const sessionToken = randomBytes(32).toString('base64url');
+        const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 dias
+        
+        const tempClient = new MongoClient(process.env.DATABASE_URL!);
+        await tempClient.connect();
+        const tempDb = tempClient.db();
+        
+        await tempDb.collection('session').insertOne({
+          token: sessionToken,
+          userId: result.user.id,
+          expiresAt,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+        
+        console.log('✅ Sessão manual criada:', sessionToken);
+        
+        // Adicionar o token ao resultado
+        signinData.token = sessionToken;
+        signinData.session = {
+          token: sessionToken,
+          userId: result.user.id,
+          expiresAt,
+        };
+        
+        await tempClient.close();
+      }
+
       // Verificar se a sessão foi criada no MongoDB
-      if (signinData.session?.token) {
+      if (signinData.session?.token || signinData.token) {
+        const sessionToken = signinData.session?.token || signinData.token;
         const { MongoClient } = await import('mongodb');
         const tempClient = new MongoClient(process.env.DATABASE_URL!);
         await tempClient.connect();
         const tempDb = tempClient.db();
         
-        const sessionDoc = await tempDb.collection('session').findOne({ token: signinData.session.token });
+        const sessionDoc = await tempDb.collection('session').findOne({ token: sessionToken });
         console.log('🔍 Sessão no MongoDB após signin:', {
           exists: !!sessionDoc,
           token: sessionDoc?.token,
@@ -226,14 +266,18 @@ export class AuthController {
       };
 
       // Garantir que os cookies sejam enviados corretamente
-      if (finalResult.session) {
-        res.cookie('better-auth.session_token', finalResult.session.token, {
+      const sessionToken = finalResult.session?.token || finalResult.token;
+      if (sessionToken) {
+        res.cookie('better-auth.session_token', sessionToken, {
           httpOnly: true,
           secure: true, // SEMPRE true para sameSite=none
           sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' para cross-origin em produção
           maxAge: 30 * 24 * 60 * 60 * 1000, // 30 dias
+          path: '/',
         });
-        console.log('🍪 Cookie de sessão definido:', finalResult.session.token);
+        console.log('🍪 Cookie de sessão definido:', sessionToken);
+      } else {
+        console.error('❌ ERRO: Nenhum token de sessão disponível para definir cookie!');
       }
 
       return res.json(responseData);
