@@ -22,6 +22,10 @@ export class BrandService {
     return this.brandModel.findOne({ userId }).exec();
   }
 
+  async findById(id: string): Promise<Brand | null> {
+    return this.brandModel.findById(id).exec();
+  }
+
   async create(brandData: Partial<Brand>): Promise<Brand> {
     const brand = new this.brandModel(brandData);
     return brand.save();

@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { AuthMiddleware } from './auth/middleware/auth.middleware';
 import { AdminModule } from './admin/admin.module';
+import { BrandModule } from './brand/brand.module';
+import { InfluencerModule } from './influencer/influencer.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { AdminModule } from './admin/admin.module';
     }),
     AuthModule,
     AdminModule,
+    BrandModule,
+    InfluencerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

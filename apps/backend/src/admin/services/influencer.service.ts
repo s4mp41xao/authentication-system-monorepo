@@ -22,6 +22,10 @@ export class InfluencerService {
     return this.influencerModel.findOne({ userId }).exec();
   }
 
+  async findById(id: string): Promise<Influencer | null> {
+    return this.influencerModel.findById(id).exec();
+  }
+
   async create(influencerData: Partial<Influencer>): Promise<Influencer> {
     const influencer = new this.influencerModel(influencerData);
     return influencer.save();

@@ -15,11 +15,11 @@ export class CampaignService {
   ) {}
 
   async findAll(): Promise<Campaign[]> {
-    return this.campaignModel.find().exec();
+    return this.campaignModel.find().lean().exec();
   }
 
   async findActive(): Promise<Campaign[]> {
-    return this.campaignModel.find({ status: CampaignStatus.ACTIVE }).exec();
+    return this.campaignModel.find({ status: CampaignStatus.ACTIVE }).lean().exec();
   }
 
   async countActive(): Promise<number> {
@@ -33,7 +33,11 @@ export class CampaignService {
   }
 
   async findById(id: string): Promise<Campaign | null> {
-    return this.campaignModel.findById(id).exec();
+    return this.campaignModel.findById(id).lean().exec();
+  }
+
+  async findByBrandId(brandId: string): Promise<Campaign[]> {
+    return this.campaignModel.find({ brandId }).lean().exec();
   }
 
   async create(campaignData: Partial<Campaign>): Promise<Campaign> {

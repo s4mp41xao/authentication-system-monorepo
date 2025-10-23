@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AdminController } from './admin.controller';
 import { AuthModule } from '../auth/auth.module';
@@ -11,7 +11,7 @@ import { CampaignService } from './services/campaign.service';
 
 @Module({
   imports: [
-    AuthModule,
+    forwardRef(() => AuthModule),
     MongooseModule.forFeature([
       { name: Influencer.name, schema: InfluencerSchema },
       { name: Brand.name, schema: BrandSchema },
