@@ -125,6 +125,24 @@ export class AuthController {
         userId: signinData.user?.id,
       });
 
+      // Verificar se a sessão foi criada no MongoDB
+      if (signinData.session?.token) {
+        const { MongoClient } = await import('mongodb');
+        const tempClient = new MongoClient(process.env.DATABASE_URL!);
+        await tempClient.connect();
+        const tempDb = tempClient.db();
+        
+        const sessionDoc = await tempDb.collection('session').findOne({ token: signinData.session.token });
+        console.log('🔍 Sessão no MongoDB após signin:', {
+          exists: !!sessionDoc,
+          token: sessionDoc?.token,
+          userId: sessionDoc?.userId,
+          expiresAt: sessionDoc?.expiresAt
+        });
+        
+        await tempClient.close();
+      }
+
       // Usar o resultado do signin
       const finalResult = signinData;
 
