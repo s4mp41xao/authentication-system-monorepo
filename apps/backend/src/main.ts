@@ -62,8 +62,8 @@ if (process.env.NODE_ENV !== 'production') {
   bootstrap();
 }
 
-// Export for Vercel serverless
-module.exports = async (req: Request, res: Response) => {
+// Export for Vercel serverless (ES Module)
+export default async (req: Request, res: Response) => {
   await createApp();
   expressApp(req, res);
 };
