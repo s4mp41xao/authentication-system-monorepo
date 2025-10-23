@@ -286,7 +286,7 @@ export class AuthController {
           secure: true,
           sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
           path: '/',
-          NODE_ENV: process.env.NODE_ENV
+          NODE_ENV: process.env.NODE_ENV,
         });
       } else {
         console.error(

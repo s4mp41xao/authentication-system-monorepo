@@ -11,8 +11,13 @@ export class AuthMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     try {
       console.log('🔐 AuthMiddleware - Verificando autenticação');
+      console.log('   Method:', req.method);
+      console.log('   URL:', req.url);
       console.log('   Path:', req.path);
+      console.log('   Original URL:', req.originalUrl);
       console.log('   Cookies recebidos:', req.headers.cookie || 'NENHUM');
+      console.log('   Origin:', req.headers.origin);
+      console.log('   Referer:', req.headers.referer);
 
       const auth = await createAuth();
 

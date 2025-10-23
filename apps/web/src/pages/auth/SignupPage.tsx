@@ -1,12 +1,11 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Users, Building, Eye, EyeOff, ArrowLeft } from 'lucide-react'
 import { authService } from '../../services/authService'
 import { UserRole } from '../../types'
 import type { SignupDto } from '../../types'
 
 export function SignupPage() {
-  const navigate = useNavigate()
 
   const [formData, setFormData] = useState<SignupDto>({
     name: '',
@@ -64,30 +63,18 @@ export function SignupPage() {
       localStorage.setItem('user', JSON.stringify(response.user))
       console.log('✅ User salvo no localStorage')
 
-      // Pequeno delay para garantir que o cookie de sessão seja estabelecido
-      await new Promise(resolve => setTimeout(resolve, 100))
+      // Delay maior para garantir que o navegador processe o cookie cross-origin
+      await new Promise(resolve => setTimeout(resolve, 500))
 
-      // Fazer uma requisição de teste para garantir que a sessão está ativa
-      try {
-        const testResponse = await fetch(
-          `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/auth/session`,
-          {
-            credentials: 'include'
-          }
-        )
-        console.log('✅ Sessão estabelecida:', testResponse.ok)
-      } catch (err) {
-        console.warn('⚠️ Erro ao verificar sessão:', err)
-      }
-
-      // Redirecionar baseado no role
-      if (response.user.role === UserRole.ORI) {
-        navigate('/admin/dashboard')
-      } else if (response.user.role === UserRole.BRAND) {
-        navigate('/brand/dashboard')
-      } else {
-        navigate('/influencer/dashboard')
-      }
+      // Forçar um refresh para garantir que os cookies sejam enviados corretamente
+      // Isso é necessário em cross-origin com SameSite=None
+      window.location.href = response.user.role === UserRole.ORI 
+        ? '/admin/dashboard'
+        : response.user.role === UserRole.BRAND
+        ? '/brand/dashboard'
+        : '/influencer/dashboard'
+      
+      return // Não executa o navigate abaixo
     } catch (err: any) {
       setError(err.message || 'Erro ao criar conta')
     } finally {

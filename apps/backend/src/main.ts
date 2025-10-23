@@ -25,7 +25,8 @@ async function createApp() {
       'http://localhost:5173',
     credentials: true, // Importante para Better Auth (cookies/sessões)
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+    exposedHeaders: ['Set-Cookie'],
   });
 
   // enable global validation pipe
