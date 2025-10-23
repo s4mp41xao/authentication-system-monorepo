@@ -41,11 +41,11 @@ export const brandService = {
     // Extrair token do localStorage
     const user = localStorage.getItem('user')
     const token = user ? JSON.parse(user).token : null
-    
+
     const headers: HeadersInit = {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     }
-    
+
     if (token) {
       headers['Authorization'] = `Bearer ${token}`
     }
@@ -67,11 +67,11 @@ export const brandService = {
     // Extrair token do localStorage
     const user = localStorage.getItem('user')
     const token = user ? JSON.parse(user).token : null
-    
+
     const headers: HeadersInit = {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     }
-    
+
     if (token) {
       headers['Authorization'] = `Bearer ${token}`
     }
@@ -93,11 +93,11 @@ export const brandService = {
     // Extrair token do localStorage
     const user = localStorage.getItem('user')
     const token = user ? JSON.parse(user).token : null
-    
+
     const headers: HeadersInit = {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     }
-    
+
     if (token) {
       headers['Authorization'] = `Bearer ${token}`
     }
@@ -123,11 +123,11 @@ export const brandService = {
     // Extrair token do localStorage
     const user = localStorage.getItem('user')
     const token = user ? JSON.parse(user).token : null
-    
+
     const headers: HeadersInit = {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     }
-    
+
     if (token) {
       headers['Authorization'] = `Bearer ${token}`
     }
