@@ -134,7 +134,10 @@ export class AuthController {
       // Se não criou sessão, logar erro detalhado
       if (!signinData.session && !signinData.token) {
         console.error('❌ ERRO: Better Auth não criou sessão após signup!');
-        console.error('❌ Detalhes do signin:', JSON.stringify(signinData, null, 2));
+        console.error(
+          '❌ Detalhes do signin:',
+          JSON.stringify(signinData, null, 2),
+        );
       }
 
       // Usar o resultado do signin
