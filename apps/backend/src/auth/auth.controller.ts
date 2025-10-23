@@ -18,7 +18,7 @@ export class AuthController {
   @UseGuards(PreventOriSignupGuard) // Previne auto-registro como ORI
   async register(@Body() signupDto: SignupDto, @Req() req, @Res() res) {
     const auth = await createAuth();
-    
+
     try {
       const result = await auth.api.signUpEmail({
         body: {
@@ -50,7 +50,12 @@ export class AuthController {
             followers: signupDto.followers || 0,
             active: true,
           });
-          console.log('✅ Perfil de influencer criado para:', signupDto.email, 'ID:', (profile as any)._id);
+          console.log(
+            '✅ Perfil de influencer criado para:',
+            signupDto.email,
+            'ID:',
+            (profile as any)._id,
+          );
         } else if (signupDto.role === UserRole.BRAND) {
           const profile = await this.brandService.create({
             userId: result.user.id,
@@ -61,7 +66,12 @@ export class AuthController {
             industry: signupDto.industry || '',
             active: true,
           });
-          console.log('✅ Perfil de marca criado para:', signupDto.email, 'ID:', (profile as any)._id);
+          console.log(
+            '✅ Perfil de marca criado para:',
+            signupDto.email,
+            'ID:',
+            (profile as any)._id,
+          );
         }
       } catch (profileError) {
         console.error('❌ Erro ao criar perfil:', profileError);
@@ -71,9 +81,9 @@ export class AuthController {
       }
 
       // Better Auth não cria sessão automaticamente no signup
-      // Fazer signin automático para criar a sessão  
+      // Fazer signin automático para criar a sessão
       console.log('🔐 Fazendo signin automático após signup...');
-      
+
       // Criar um objeto Request fake para o signin interno
       const signinResult = await auth.api.signInEmail({
         body: {
@@ -104,14 +114,16 @@ export class AuthController {
       }
 
       // Copiar cookies da resposta do signin para a resposta atual
-      const setCookieHeaders = signinResult.headers.getSetCookie ? 
-        signinResult.headers.getSetCookie() : 
-        signinResult.headers.get('set-cookie');
-      
+      const setCookieHeaders = signinResult.headers.getSetCookie
+        ? signinResult.headers.getSetCookie()
+        : signinResult.headers.get('set-cookie');
+
       if (setCookieHeaders) {
         console.log('🍪 Copiando cookies do signin para a resposta');
         if (Array.isArray(setCookieHeaders)) {
-          setCookieHeaders.forEach(cookie => res.append('Set-Cookie', cookie));
+          setCookieHeaders.forEach((cookie) =>
+            res.append('Set-Cookie', cookie),
+          );
         } else {
           res.setHeader('Set-Cookie', setCookieHeaders);
         }
@@ -128,14 +140,21 @@ export class AuthController {
         await client.connect();
         const db = client.db();
 
-        console.log('🔍 Buscando usuário recém-criado com ID:', finalResult.user.id);
+        console.log(
+          '🔍 Buscando usuário recém-criado com ID:',
+          finalResult.user.id,
+        );
 
         // Tentar buscar de várias formas
-        let userDoc = await db.collection('user').findOne({ id: finalResult.user.id });
+        let userDoc = await db
+          .collection('user')
+          .findOne({ id: finalResult.user.id });
 
         if (!userDoc) {
           console.log('🔍 Tentando com _id como string...');
-          userDoc = await db.collection('user').findOne({ _id: finalResult.user.id });
+          userDoc = await db
+            .collection('user')
+            .findOne({ _id: finalResult.user.id });
         }
 
         if (!userDoc) {

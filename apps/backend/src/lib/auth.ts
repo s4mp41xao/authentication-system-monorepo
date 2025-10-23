@@ -32,7 +32,7 @@ async function createAuth() {
 
     const isProduction = process.env.NODE_ENV === 'production';
     const sameSiteValue = isProduction ? 'none' : 'lax';
-    
+
     console.log('🍪 Configuração de cookies:');
     console.log('   NODE_ENV:', process.env.NODE_ENV);
     console.log('   isProduction:', isProduction);
