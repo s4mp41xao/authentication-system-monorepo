@@ -124,25 +124,28 @@ export class AuthController {
       console.log('✅ Signin automático executado:', {
         hasSession: !!signinData.session,
         hasToken: !!signinData.token,
-        sessionToken: signinData.session?.token || signinData.token || '❌ Missing',
+        sessionToken:
+          signinData.session?.token || signinData.token || '❌ Missing',
         userId: signinData.user?.id,
       });
 
       // Se não criou sessão, tentar criar manualmente
       if (!signinData.session && !signinData.token) {
-        console.log('⚠️  Signin não criou sessão, tentando criar manualmente...');
-        
+        console.log(
+          '⚠️  Signin não criou sessão, tentando criar manualmente...',
+        );
+
         // Criar sessão diretamente no MongoDB
         const { MongoClient } = await import('mongodb');
         const { randomBytes } = await import('crypto');
-        
+
         const sessionToken = randomBytes(32).toString('base64url');
         const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 dias
-        
+
         const tempClient = new MongoClient(process.env.DATABASE_URL!);
         await tempClient.connect();
         const tempDb = tempClient.db();
-        
+
         await tempDb.collection('session').insertOne({
           token: sessionToken,
           userId: result.user.id,
@@ -150,9 +153,9 @@ export class AuthController {
           createdAt: new Date(),
           updatedAt: new Date(),
         });
-        
+
         console.log('✅ Sessão manual criada:', sessionToken);
-        
+
         // Adicionar o token ao resultado
         signinData.token = sessionToken;
         signinData.session = {
@@ -160,7 +163,7 @@ export class AuthController {
           userId: result.user.id,
           expiresAt,
         };
-        
+
         await tempClient.close();
       }
 
@@ -171,15 +174,17 @@ export class AuthController {
         const tempClient = new MongoClient(process.env.DATABASE_URL!);
         await tempClient.connect();
         const tempDb = tempClient.db();
-        
-        const sessionDoc = await tempDb.collection('session').findOne({ token: sessionToken });
+
+        const sessionDoc = await tempDb
+          .collection('session')
+          .findOne({ token: sessionToken });
         console.log('🔍 Sessão no MongoDB após signin:', {
           exists: !!sessionDoc,
           token: sessionDoc?.token,
           userId: sessionDoc?.userId,
-          expiresAt: sessionDoc?.expiresAt
+          expiresAt: sessionDoc?.expiresAt,
         });
-        
+
         await tempClient.close();
       }
 
@@ -276,8 +281,17 @@ export class AuthController {
           path: '/',
         });
         console.log('🍪 Cookie de sessão definido:', sessionToken);
+        console.log('🍪 Configuração do cookie:', {
+          httpOnly: true,
+          secure: true,
+          sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+          path: '/',
+          NODE_ENV: process.env.NODE_ENV
+        });
       } else {
-        console.error('❌ ERRO: Nenhum token de sessão disponível para definir cookie!');
+        console.error(
+          '❌ ERRO: Nenhum token de sessão disponível para definir cookie!',
+        );
       }
 
       return res.json(responseData);
