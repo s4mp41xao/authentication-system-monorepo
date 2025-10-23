@@ -1,9 +1,11 @@
 // User Roles
-export enum UserRole {
-  INFLUENCER = 'influencer',
-  BRAND = 'brand',
-  ORI = 'ori'
-}
+export const UserRole = {
+  INFLUENCER: 'influencer',
+  BRAND: 'brand',
+  ORI: 'ori'
+} as const
+
+export type UserRole = typeof UserRole[keyof typeof UserRole]
 
 // User Interface
 export interface User {
