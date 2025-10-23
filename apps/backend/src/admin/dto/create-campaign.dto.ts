@@ -6,7 +6,7 @@ import {
   IsEnum,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { CampaignStatus } from '../schemas/campaign.schema';
+import { CampaignStatus } from '../schemas/campaign.schema.js';
 
 export class CreateCampaignDto {
   @IsString()

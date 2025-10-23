@@ -1,7 +1,7 @@
 import { betterAuth } from 'better-auth';
 import { MongoClient } from 'mongodb';
 import { mongodbAdapter } from 'better-auth/adapters/mongodb';
-import { UserRole } from '../auth/enums/user-role.enum';
+import { UserRole } from '../auth/enums/user-role.enum.js';
 
 // Singleton to reuse the same client and auth instance
 let authInstance: any = null;

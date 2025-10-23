@@ -1,6 +1,6 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import { createAuth } from '../../lib/auth';
+import { createAuth } from '../../lib/auth.js';
 
 // Cache simples para sessões (válido por 5 minutos)
 const sessionCache = new Map<string, { user: any; expires: number }>();

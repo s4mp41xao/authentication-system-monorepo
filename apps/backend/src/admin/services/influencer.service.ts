@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Influencer, InfluencerDocument } from '../schemas/influencer.schema';
+import { Influencer, InfluencerDocument } from '../schemas/influencer.schema.js';
 
 @Injectable()
 export class InfluencerService {

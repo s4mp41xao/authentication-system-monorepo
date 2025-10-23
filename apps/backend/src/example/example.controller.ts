@@ -1,7 +1,7 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { Roles } from '../auth/decorators/roles.decorator';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { UserRole } from '../auth/enums/user-role.enum';
+import { Roles } from '../auth/decorators/roles.decorator.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
+import { UserRole } from '../auth/enums/user-role.enum.js';
 
 /**
  * Controller de exemplos para demonstrar controle de acesso por roles

@@ -1,9 +1,9 @@
 import { Controller, Get, Req, UseGuards, Param } from '@nestjs/common';
-import { Roles } from '../auth/decorators/roles.decorator';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { UserRole } from '../auth/enums/user-role.enum';
-import { CampaignService } from '../admin/services/campaign.service';
-import { InfluencerService } from '../admin/services/influencer.service';
+import { Roles } from '../auth/decorators/roles.decorator.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
+import { UserRole } from '../auth/enums/user-role.enum.js';
+import { CampaignService } from '../admin/services/campaign.service.js';
+import { InfluencerService } from '../admin/services/influencer.service.js';
 
 /**
  * Controller para influencers

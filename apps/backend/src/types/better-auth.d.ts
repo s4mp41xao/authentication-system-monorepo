@@ -1,6 +1,6 @@
 // Extensão dos tipos do Better Auth para incluir o campo role
 
-import { UserRole } from './auth/enums/user-role.enum';
+import { UserRole } from './auth/enums/user-role.enum.js';
 
 declare module 'better-auth' {
   interface User {

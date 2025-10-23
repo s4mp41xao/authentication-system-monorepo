@@ -8,15 +8,15 @@ import {
   Patch,
   Delete,
 } from '@nestjs/common';
-import { Roles } from '../auth/decorators/roles.decorator';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { UserRole } from '../auth/enums/user-role.enum';
-import { SignupDto } from '../auth/dto/signup.dto';
-import { createAuth } from '../lib/auth';
-import { InfluencerService } from './services/influencer.service';
-import { BrandService } from './services/brand.service';
-import { CampaignService } from './services/campaign.service';
-import { CreateCampaignDto } from './dto/create-campaign.dto';
+import { Roles } from '../auth/decorators/roles.decorator.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
+import { UserRole } from '../auth/enums/user-role.enum.js';
+import { SignupDto } from '../auth/dto/signup.dto.js';
+import { createAuth } from '../lib/auth.js';
+import { InfluencerService } from './services/influencer.service.js';
+import { BrandService } from './services/brand.service.js';
+import { CampaignService } from './services/campaign.service.js';
+import { CreateCampaignDto } from './dto/create-campaign.dto.js';
 
 /**
  * Controller de administração

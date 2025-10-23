@@ -1,11 +1,11 @@
 import { Controller, Post, Body, Req, Res, UseGuards } from '@nestjs/common';
-import { createAuth } from '../lib/auth';
-import { SignupDto } from './dto/signup.dto';
-import { SigninDto } from './dto/signin.dto';
-import { PreventOriSignupGuard } from './guards/prevent-ori-signup.guard';
-import { UserRole } from './enums/user-role.enum';
-import { InfluencerService } from '../admin/services/influencer.service';
-import { BrandService } from '../admin/services/brand.service';
+import { createAuth } from '../lib/auth.js';
+import { SignupDto } from './dto/signup.dto.js';
+import { SigninDto } from './dto/signin.dto.js';
+import { PreventOriSignupGuard } from './guards/prevent-ori-signup.guard.js';
+import { UserRole } from './enums/user-role.enum.js';
+import { InfluencerService } from '../admin/services/influencer.service.js';
+import { BrandService } from '../admin/services/brand.service.js';
 
 @Controller('auth')
 export class AuthController {

@@ -4,7 +4,7 @@ import {
   ExecutionContext,
   ForbiddenException,
 } from '@nestjs/common';
-import { UserRole } from '../enums/user-role.enum';
+import { UserRole } from '../enums/user-role.enum.js';
 
 /**
  * Guard para prevenir que usuários se registrem como ORI (administrador)

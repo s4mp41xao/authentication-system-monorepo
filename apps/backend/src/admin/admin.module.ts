@@ -1,13 +1,13 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AdminController } from './admin.controller';
-import { AuthModule } from '../auth/auth.module';
-import { Influencer, InfluencerSchema } from './schemas/influencer.schema';
-import { Brand, BrandSchema } from './schemas/brand.schema';
-import { Campaign, CampaignSchema } from './schemas/campaign.schema';
-import { InfluencerService } from './services/influencer.service';
-import { BrandService } from './services/brand.service';
-import { CampaignService } from './services/campaign.service';
+import { AdminController } from './admin.controller.js';
+import { AuthModule } from '../auth/auth.module.js';
+import { Influencer, InfluencerSchema } from './schemas/influencer.schema.js';
+import { Brand, BrandSchema } from './schemas/brand.schema.js';
+import { Campaign, CampaignSchema } from './schemas/campaign.schema.js';
+import { InfluencerService } from './services/influencer.service.js';
+import { BrandService } from './services/brand.service.js';
+import { CampaignService } from './services/campaign.service.js';
 
 @Module({
   imports: [

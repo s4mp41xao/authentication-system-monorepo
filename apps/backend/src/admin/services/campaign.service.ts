@@ -5,7 +5,7 @@ import {
   Campaign,
   CampaignDocument,
   CampaignStatus,
-} from '../schemas/campaign.schema';
+} from '../schemas/campaign.schema.js';
 
 @Injectable()
 export class CampaignService {

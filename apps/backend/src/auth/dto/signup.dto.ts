@@ -6,7 +6,7 @@ import {
   IsOptional,
   IsNumber,
 } from 'class-validator';
-import { UserRole } from '../enums/user-role.enum';
+import { UserRole } from '../enums/user-role.enum.js';
 
 export class SignupDto {
   @IsEmail()
