@@ -10,6 +10,10 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
 export class AuthMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     try {
+      console.log('🔐 AuthMiddleware - Verificando autenticação');
+      console.log('   Path:', req.path);
+      console.log('   Cookies recebidos:', req.headers.cookie || 'NENHUM');
+      
       const auth = await createAuth();
 
       // Extrair token do cookie primeiro
@@ -20,16 +24,17 @@ export class AuthMiddleware implements NestMiddleware {
         );
         if (tokenMatch) {
           token = tokenMatch[1];
+          console.log('   Token encontrado:', token.substring(0, 10) + '...');
         }
+      } else {
+        console.log('   ⚠️  Cookie "better-auth.session_token" NÃO encontrado!');
       }
 
       // Verificar cache primeiro
       if (token && sessionCache.has(token)) {
         const cached = sessionCache.get(token)!;
         if (cached.expires > Date.now()) {
-          if (process.env.NODE_ENV !== 'production') {
-            console.log('⚡ Usando sessão do cache');
-          }
+          console.log('⚡ Usando sessão do cache para:', cached.user.email);
           (req as any).user = cached.user;
           return next();
         } else {
@@ -38,9 +43,7 @@ export class AuthMiddleware implements NestMiddleware {
         }
       }
 
-      if (process.env.NODE_ENV !== 'production') {
-        console.log('🔍 Verificando sessão (sem cache)');
-      }
+      console.log('🔍 Verificando sessão no Better Auth...');
 
       // Better Auth precisa do request completo para verificar a sessão
       const session = await auth.api.getSession({
@@ -49,14 +52,7 @@ export class AuthMiddleware implements NestMiddleware {
       });
 
       if (session?.user) {
-        if (process.env.NODE_ENV !== 'production') {
-          console.log(
-            '✅ Sessão Better Auth:',
-            session.user?.email,
-            'Role:',
-            session.user?.role,
-          );
-        }
+        console.log('✅ Sessão Better Auth encontrada:', session.user?.email, 'Role:', session.user?.role);
         (req as any).user = session.user;
 
         // Adicionar ao cache
@@ -67,11 +63,10 @@ export class AuthMiddleware implements NestMiddleware {
           });
         }
       } else {
+        console.log('⚠️  Better Auth NÃO retornou sessão');
         // Fallback: Buscar diretamente no banco
         if (token) {
-          if (process.env.NODE_ENV !== 'production') {
-            console.log('🔍 Fallback: buscando no MongoDB');
-          }
+          console.log('🔍 Fallback: buscando sessão diretamente no MongoDB...');
 
           try {
             const { MongoClient, ObjectId } = await import('mongodb');
@@ -101,14 +96,7 @@ export class AuthMiddleware implements NestMiddleware {
                   name: userDoc.name,
                 };
 
-                if (process.env.NODE_ENV !== 'production') {
-                  console.log(
-                    '✅ Usuário do MongoDB:',
-                    user.email,
-                    'Role:',
-                    user.role,
-                  );
-                }
+                console.log('✅ Usuário encontrado no MongoDB:', user.email, 'Role:', user.role);
                 (req as any).user = user;
 
                 // Adicionar ao cache
