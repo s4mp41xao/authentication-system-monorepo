@@ -57,14 +57,14 @@ async function createAuth() {
           maxAge: 60 * 5, // 5 minutos de cache
         },
       },
-      // Configuração explícita de cookies
+      // Configuração explícita de cookies para cross-origin
       advanced: {
         cookieOptions: {
-          sameSite: 'lax', // Permite cross-origin em desenvolvimento
-          secure: process.env.NODE_ENV === 'production', // HTTPS apenas em produção
+          sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' para cross-origin em produção
+          secure: true, // SEMPRE true (necessário para sameSite=none)
           httpOnly: true,
         },
-        useSecureCookies: process.env.NODE_ENV === 'production',
+        useSecureCookies: true,
       },
     });
 
