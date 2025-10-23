@@ -42,18 +42,27 @@ export const brandService = {
     const user = localStorage.getItem('user')
     const token = user ? JSON.parse(user).token : null
 
+    console.log('🔍 [BrandService] getDashboard chamado')
+    console.log('   User no localStorage:', user ? 'SIM' : 'NÃO')
+    console.log('   Token extraído:', token ? `${token.substring(0, 10)}...` : 'NENHUM')
+
     const headers: HeadersInit = {
       'Content-Type': 'application/json'
     }
 
     if (token) {
       headers['Authorization'] = `Bearer ${token}`
+      console.log('   ✅ Authorization header adicionado')
+    } else {
+      console.log('   ⚠️  Sem token - Authorization header NÃO adicionado')
     }
 
     const response = await fetch(`${API_URL}/brand/dashboard`, {
       credentials: 'include',
       headers
     })
+
+    console.log('   Response status:', response.status)
 
     if (!response.ok) {
       throw new Error('Erro ao buscar dados do dashboard')
