@@ -57,7 +57,8 @@ export function BrandDashboard() {
 
   const loadDashboard = async () => {
     try {
-      const response = await fetch('http://localhost:3000/brand/dashboard', {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
+      const response = await fetch(`${API_URL}/brand/dashboard`, {
         credentials: 'include'
       })
 

@@ -94,8 +94,9 @@ export default function InfluencerProfilePage() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
         const response = await fetch(
-          `http://localhost:3000/influencer/profile/${id}`,
+          `${API_URL}/influencer/profile/${id}`,
           {
             credentials: 'include'
           }

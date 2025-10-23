@@ -56,8 +56,9 @@ export default function BrandProfilePage() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
         const response = await fetch(
-          `http://localhost:3000/brand/profile/${id}`,
+          `${API_URL}/brand/profile/${id}`,
           {
             credentials: 'include'
           }
