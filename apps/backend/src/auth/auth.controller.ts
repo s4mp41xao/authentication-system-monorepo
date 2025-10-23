@@ -37,13 +37,21 @@ export class AuthController {
         userRole: result.user?.role,
       });
 
-      // Verificar se o role foi salvo no MongoDB
+      // GARANTIR que o role seja salvo no MongoDB
       const { MongoClient, ObjectId } = await import('mongodb');
       const tempClient = new MongoClient(process.env.DATABASE_URL!);
       await tempClient.connect();
       const tempDb = tempClient.db();
+      
+      // Atualizar o usuário com o role
+      await tempDb.collection('user').updateOne(
+        { _id: new ObjectId(result.user.id) },
+        { $set: { role: signupDto.role } }
+      );
+      
+      // Verificar se foi salvo
       const createdUser = await tempDb.collection('user').findOne({ _id: new ObjectId(result.user.id) });
-      console.log('🔍 Usuário criado no MongoDB:', {
+      console.log('🔍 Usuário criado/atualizado no MongoDB:', {
         id: createdUser?._id,
         email: createdUser?.email,
         role: createdUser?.role,
