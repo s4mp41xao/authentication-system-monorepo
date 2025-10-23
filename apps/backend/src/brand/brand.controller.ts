@@ -218,7 +218,7 @@ export class BrandController {
     console.log('   Stats:', response.stats);
     console.log('   Campaigns:', response.campaigns.length);
     console.log('   Influencers:', response.influencers.length);
-    
+
     return response;
   }
 
