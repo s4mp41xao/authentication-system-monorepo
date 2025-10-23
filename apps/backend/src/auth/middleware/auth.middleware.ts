@@ -32,7 +32,8 @@ export class AuthMiddleware implements NestMiddleware {
         );
       }
 
-      // Verificar cache primeiro
+      // Verificar cache primeiro (DESABILITADO TEMPORARIAMENTE PARA DEBUG)
+      /*
       if (token && sessionCache.has(token)) {
         const cached = sessionCache.get(token)!;
         if (cached.expires > Date.now()) {
@@ -44,6 +45,7 @@ export class AuthMiddleware implements NestMiddleware {
           sessionCache.delete(token);
         }
       }
+      */
 
       console.log('🔍 Verificando sessão no Better Auth...');
 
@@ -62,13 +64,15 @@ export class AuthMiddleware implements NestMiddleware {
         );
         (req as any).user = session.user;
 
-        // Adicionar ao cache
+        // Adicionar ao cache (DESABILITADO)
+        /*
         if (token) {
           sessionCache.set(token, {
             user: session.user,
             expires: Date.now() + CACHE_DURATION,
           });
         }
+        */
       } else {
         console.log('⚠️  Better Auth NÃO retornou sessão');
         // Fallback: Buscar diretamente no banco
@@ -111,11 +115,13 @@ export class AuthMiddleware implements NestMiddleware {
                 );
                 (req as any).user = user;
 
-                // Adicionar ao cache
+                // Adicionar ao cache (DESABILITADO)
+                /*
                 sessionCache.set(token, {
                   user,
                   expires: Date.now() + CACHE_DURATION,
                 });
+                */
               }
             }
 
