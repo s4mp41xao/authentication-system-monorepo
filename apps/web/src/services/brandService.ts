@@ -1,5 +1,8 @@
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
 
+// FORCE REBUILD - v2.0.0 - Authorization Header Implementation
+console.log('🚀 [BrandService] Carregado com suporte a Authorization Header v2.0.0')
+
 export interface BrandDashboardStats {
   activeCampaigns: number
   connectedInfluencers: number
@@ -44,7 +47,10 @@ export const brandService = {
 
     console.log('🔍 [BrandService] getDashboard chamado')
     console.log('   User no localStorage:', user ? 'SIM' : 'NÃO')
-    console.log('   Token extraído:', token ? `${token.substring(0, 10)}...` : 'NENHUM')
+    console.log(
+      '   Token extraído:',
+      token ? `${token.substring(0, 10)}...` : 'NENHUM'
+    )
 
     const headers: HeadersInit = {
       'Content-Type': 'application/json'
