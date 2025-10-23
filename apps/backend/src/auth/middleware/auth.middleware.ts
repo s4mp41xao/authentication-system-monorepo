@@ -21,9 +21,16 @@ export class AuthMiddleware implements NestMiddleware {
 
       const auth = await createAuth();
 
-      // Extrair token do cookie primeiro
+      // Extrair token do Authorization header OU cookie
       let token: string | null = null;
-      if (req.headers.cookie?.includes('better-auth.session_token=')) {
+      
+      // Prioridade 1: Authorization header (para cross-origin)
+      if (req.headers.authorization?.startsWith('Bearer ')) {
+        token = req.headers.authorization.substring(7);
+        console.log('   Token encontrado no Authorization header:', token.substring(0, 10) + '...');
+      }
+      // Prioridade 2: Cookie (para same-origin)
+      else if (req.headers.cookie?.includes('better-auth.session_token=')) {
         const tokenMatch = req.headers.cookie.match(
           /better-auth\.session_token=([^;]+)/,
         );

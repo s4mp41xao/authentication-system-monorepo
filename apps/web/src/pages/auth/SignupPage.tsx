@@ -58,15 +58,15 @@ export function SignupPage() {
       console.log('✅ Role do usuário:', response.user?.role)
       console.log('✅ Dados completos:', JSON.stringify(response.user, null, 2))
 
-      // Armazenar dados do usuário
-      localStorage.setItem('user', JSON.stringify(response.user))
-      console.log('✅ User salvo no localStorage')
+      // Armazenar dados do usuário E token
+      const userWithToken = {
+        ...response.user,
+        token: response.token || (response as any).session?.token
+      }
+      localStorage.setItem('user', JSON.stringify(userWithToken))
+      console.log('✅ User e token salvos no localStorage')
 
-      // Delay maior para garantir que o navegador processe o cookie cross-origin
-      await new Promise(resolve => setTimeout(resolve, 500))
-
-      // Forçar um refresh para garantir que os cookies sejam enviados corretamente
-      // Isso é necessário em cross-origin com SameSite=None
+      // Redirect imediato (não precisa mais de delay)
       window.location.href =
         response.user.role === UserRole.ORI
           ? '/admin/dashboard'

@@ -32,8 +32,21 @@ export interface CampaignWithBrand {
 
 export const influencerService = {
   async getDashboard(): Promise<InfluencerDashboardData> {
+    // Tentar obter token do localStorage (fallback para cross-origin)
+    const user = localStorage.getItem('user')
+    const token = user ? JSON.parse(user).token : null
+    
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    }
+    
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`
+    }
+    
     const response = await fetch(`${API_URL}/influencer/dashboard`, {
-      credentials: 'include'
+      credentials: 'include',
+      headers
     })
 
     if (!response.ok) {
