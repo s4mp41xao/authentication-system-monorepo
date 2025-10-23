@@ -34,14 +34,15 @@ export class RolesGuard implements CanActivate {
       return false;
     }
 
-    // Comparação case-insensitive
-    const userRole = user.role.toUpperCase();
+    // Comparação case-insensitive (normalizar para lowercase)
+    const userRole = user.role.toLowerCase();
     const hasAccess = requiredRoles.some(
-      (role) => userRole === role.toUpperCase(),
+      (role) => userRole === role.toLowerCase(),
     );
 
     if (process.env.NODE_ENV !== 'production') {
       console.log('   Role normalizado:', userRole);
+      console.log('   Roles requeridos normalizados:', requiredRoles.map(r => r.toLowerCase()));
       console.log('   Tem acesso?', hasAccess ? '✅ Sim' : '❌ Não');
     }
 
