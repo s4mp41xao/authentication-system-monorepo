@@ -13,7 +13,7 @@ export class AuthMiddleware implements NestMiddleware {
       console.log('🔐 AuthMiddleware - Verificando autenticação');
       console.log('   Path:', req.path);
       console.log('   Cookies recebidos:', req.headers.cookie || 'NENHUM');
-      
+
       const auth = await createAuth();
 
       // Extrair token do cookie primeiro
@@ -27,7 +27,9 @@ export class AuthMiddleware implements NestMiddleware {
           console.log('   Token encontrado:', token.substring(0, 10) + '...');
         }
       } else {
-        console.log('   ⚠️  Cookie "better-auth.session_token" NÃO encontrado!');
+        console.log(
+          '   ⚠️  Cookie "better-auth.session_token" NÃO encontrado!',
+        );
       }
 
       // Verificar cache primeiro
@@ -52,7 +54,12 @@ export class AuthMiddleware implements NestMiddleware {
       });
 
       if (session?.user) {
-        console.log('✅ Sessão Better Auth encontrada:', session.user?.email, 'Role:', session.user?.role);
+        console.log(
+          '✅ Sessão Better Auth encontrada:',
+          session.user?.email,
+          'Role:',
+          session.user?.role,
+        );
         (req as any).user = session.user;
 
         // Adicionar ao cache
@@ -96,7 +103,12 @@ export class AuthMiddleware implements NestMiddleware {
                   name: userDoc.name,
                 };
 
-                console.log('✅ Usuário encontrado no MongoDB:', user.email, 'Role:', user.role);
+                console.log(
+                  '✅ Usuário encontrado no MongoDB:',
+                  user.email,
+                  'Role:',
+                  user.role,
+                );
                 (req as any).user = user;
 
                 // Adicionar ao cache
