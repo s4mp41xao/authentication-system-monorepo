@@ -52,6 +52,19 @@ async function createAuth() {
       session: {
         expiresIn: 60 * 60 * 24 * 30, // 30 dias
         updateAge: 60 * 60 * 24, // Atualiza a cada 1 dia
+        cookieCache: {
+          enabled: true,
+          maxAge: 60 * 5, // 5 minutos de cache
+        },
+      },
+      // Configuração explícita de cookies
+      advanced: {
+        cookieOptions: {
+          sameSite: 'lax', // Permite cross-origin em desenvolvimento
+          secure: process.env.NODE_ENV === 'production', // HTTPS apenas em produção
+          httpOnly: true,
+        },
+        useSecureCookies: process.env.NODE_ENV === 'production',
       },
     });
 
