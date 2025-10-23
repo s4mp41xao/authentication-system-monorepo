@@ -3,11 +3,7 @@ config();
 
 async function createAdminORI() {
   console.log('🔧 CRIANDO ADMIN ORI - MÉTODO GARANTIDO\n');
-
-  const API_URL =
-    process.env.VERCEL_ENV === 'production'
-      ? 'https://authentication-system-monorepo-back.vercel.app'
-      : 'http://localhost:3000';
+  console.log('⚠️  CRIANDO DIRETAMENTE NO MONGODB DE PRODUÇÃO\n');
 
   const adminData = {
     email: 'admin@ori.com',
@@ -16,55 +12,12 @@ async function createAdminORI() {
     role: 'ori',
   };
 
-  console.log('📌 URL da API:', API_URL);
   console.log('📧 Email:', adminData.email);
   console.log('🔑 Senha:', adminData.password);
   console.log();
 
-  try {
-    // Fazer signup via API (que usa Better Auth internamente)
-    console.log('🚀 Criando usuário via API /auth/signup...');
-    const response = await fetch(`${API_URL}/auth/signup`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(adminData),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      console.log('✅ ADMIN ORI CRIADO COM SUCESSO!');
-      console.log('User ID:', data.user?.id);
-      console.log('Email:', data.user?.email);
-      console.log('Role:', data.user?.role);
-      console.log();
-      console.log('═══════════════════════════════════════════════════════');
-      console.log('🎉 CREDENCIAIS DO ADMIN ORI:');
-      console.log('═══════════════════════════════════════════════════════');
-      console.log(`   Email: ${adminData.email}`);
-      console.log(`   Senha: ${adminData.password}`);
-      console.log('═══════════════════════════════════════════════════════');
-    } else {
-      const errorText = await response.text();
-      console.log('❌ Erro ao criar admin:', response.status);
-      console.log('Resposta:', errorText);
-
-      // Se o erro for "não pode se registrar como ORI", vamos criar via MongoDB direto
-      if (errorText.includes('administrador') || errorText.includes('ORI')) {
-        console.log();
-        console.log(
-          '⚠️  API bloqueou criação de ORI. Criando diretamente no MongoDB...',
-        );
-        await createAdminDirectMongo(adminData);
-      }
-    }
-  } catch (error) {
-    console.error('❌ Erro:', error);
-    console.log();
-    console.log('⚠️  Tentando criar diretamente no MongoDB...');
-    await createAdminDirectMongo(adminData);
-  }
+  // Criar diretamente no MongoDB (funciona tanto local quanto produção)
+  await createAdminDirectMongo(adminData);
 }
 
 async function createAdminDirectMongo(adminData: {

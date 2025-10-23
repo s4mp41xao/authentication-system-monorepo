@@ -47,6 +47,46 @@ export interface Campaign {
   assignedInfluencers: string[]
 }
 
+export interface BrandProfileResponse {
+  profile: {
+    _id: string
+    userId: string
+    name: string
+    email: string
+    website?: string
+    description?: string
+    industry?: string
+    active: boolean
+  }
+  stats: {
+    totalCampaigns: number
+    activeCampaigns: number
+    connectedInfluencers: number
+  }
+  campaigns: Array<{
+    _id: string
+    name: string
+    description?: string
+    status: string
+    budget?: number
+    startDate?: string
+    endDate?: string
+    assignedInfluencers: any
+  }>
+  influencers: Array<{
+    _id: string
+    userId: string
+    name: string
+    email: string
+    instagram?: string
+    tiktok?: string
+    youtube?: string
+    followers: number
+    active: boolean
+    campaigns: Array<{ name: string; status: string }>
+  }>
+}
+
 export const adminService = {
   async getDashboard(): Promise<DashboardStats> {
     // Extrair token do localStorage
@@ -150,5 +190,30 @@ export const adminService = {
 
     const data = await response.json()
     return data.data
+  }
+  ,
+
+  async getBrandProfile(brandId: string): Promise<BrandProfileResponse> {
+    const user = localStorage.getItem('user')
+    const token = user ? JSON.parse(user).token : null
+
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json'
+    }
+
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`
+    }
+
+    const response = await fetch(`${API_URL}/brand/profile/${brandId}`, {
+      credentials: 'include',
+      headers
+    })
+
+    if (!response.ok) {
+      throw new Error('Erro ao carregar perfil da marca')
+    }
+
+    return response.json()
   }
 }

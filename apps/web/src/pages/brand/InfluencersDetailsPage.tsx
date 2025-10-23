@@ -1,29 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router'
 import { ArrowLeft } from 'lucide-react'
+import { adminService, type BrandProfileResponse } from '../../services/adminService'
 
-interface Influencer {
-  _id: string
-  userId: string
-  name: string
-  email: string
-  instagram?: string
-  followers: number
-  active: boolean
-  campaigns: Array<{
-    name: string
-    status: string
-  }>
-}
+ 
 
-interface BrandProfile {
-  name: string
-}
-
-interface ProfileData {
-  profile: BrandProfile
-  influencers: Influencer[]
-}
+type ProfileData = BrandProfileResponse
 
 export default function BrandInfluencersDetailsPage() {
   const { id } = useParams<{ id: string }>()
@@ -35,16 +17,7 @@ export default function BrandInfluencersDetailsPage() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
-        const response = await fetch(`${API_URL}/brand/profile/${id}`, {
-          credentials: 'include'
-        })
-
-        if (!response.ok) {
-          throw new Error('Erro ao carregar dados da marca')
-        }
-
-        const data = await response.json()
+        const data = await adminService.getBrandProfile(id!)
         setProfileData(data)
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Erro ao carregar dados')
