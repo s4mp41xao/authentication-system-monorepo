@@ -11,21 +11,9 @@ export default defineConfig({
     }
   },
   server: {
-    port: 5173,
-    proxy: {
-      // Proxy para o backend NestJS
-      '/auth': {
-        target: 'http://localhost:3000',
-        changeOrigin: true
-      },
-      '/admin': {
-        target: 'http://localhost:3000',
-        changeOrigin: true
-      },
-      '/api': {
-        target: 'http://localhost:3000',
-        changeOrigin: true
-      }
-    }
+    port: 5173
+    // Não usar proxy - frontend e backend devem ser independentes
+    // O frontend faz chamadas diretas para http://localhost:3000 usando fetch
+    // com credentials: 'include' para enviar cookies
   }
 })
