@@ -1,4 +1,11 @@
-import { IsEmail, IsString, MinLength, IsEnum } from 'class-validator';
+import {
+  IsEmail,
+  IsString,
+  MinLength,
+  IsEnum,
+  IsOptional,
+  IsNumber,
+} from 'class-validator';
 import { UserRole } from '../enums/user-role.enum';
 
 export class SignupDto {
@@ -16,4 +23,30 @@ export class SignupDto {
     message: 'Role must be one of: influencer, brand, or ori',
   })
   role: UserRole;
+
+  // Campos opcionais para Influencer
+  @IsOptional()
+  @IsString()
+  instagram?: string;
+
+  @IsOptional()
+  @IsNumber()
+  followers?: number;
+
+  @IsOptional()
+  @IsString()
+  bio?: string;
+
+  // Campos opcionais para Brand
+  @IsOptional()
+  @IsString()
+  website?: string;
+
+  @IsOptional()
+  @IsString()
+  industry?: string;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
 }
