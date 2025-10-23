@@ -56,10 +56,29 @@ export function SignupPage() {
 
     try {
       const response = await authService.signup(formData)
-      console.log('Usuário criado:', response)
+      console.log('✅ Usuário criado:', response)
+      console.log('✅ Role do usuário:', response.user?.role)
+      console.log('✅ Dados completos:', JSON.stringify(response.user, null, 2))
 
       // Armazenar dados do usuário
       localStorage.setItem('user', JSON.stringify(response.user))
+      console.log('✅ User salvo no localStorage')
+
+      // Pequeno delay para garantir que o cookie de sessão seja estabelecido
+      await new Promise(resolve => setTimeout(resolve, 100))
+
+      // Fazer uma requisição de teste para garantir que a sessão está ativa
+      try {
+        const testResponse = await fetch(
+          `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/auth/session`,
+          {
+            credentials: 'include'
+          }
+        )
+        console.log('✅ Sessão estabelecida:', testResponse.ok)
+      } catch (err) {
+        console.warn('⚠️ Erro ao verificar sessão:', err)
+      }
 
       // Redirecionar baseado no role
       if (response.user.role === UserRole.ORI) {
@@ -215,6 +234,132 @@ export function SignupPage() {
                   </button>
                 </div>
               </div>
+
+              {/* Campos específicos para Influencer */}
+              {formData.role === UserRole.INFLUENCER && (
+                <>
+                  <div>
+                    <label
+                      htmlFor="instagram"
+                      className="block text-sm font-medium text-black"
+                    >
+                      Instagram (opcional)
+                    </label>
+                    <input
+                      id="instagram"
+                      name="instagram"
+                      type="text"
+                      value={formData.instagram || ''}
+                      onChange={handleInputChange}
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-black focus:border-black"
+                      placeholder="@seuinstagram"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="followers"
+                      className="block text-sm font-medium text-black"
+                    >
+                      Número de Seguidores (opcional)
+                    </label>
+                    <input
+                      id="followers"
+                      name="followers"
+                      type="number"
+                      min="0"
+                      value={formData.followers || ''}
+                      onChange={e =>
+                        setFormData(prev => ({
+                          ...prev,
+                          followers: e.target.value
+                            ? parseInt(e.target.value)
+                            : undefined
+                        }))
+                      }
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-black focus:border-black"
+                      placeholder="10000"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="bio"
+                      className="block text-sm font-medium text-black"
+                    >
+                      Bio (opcional)
+                    </label>
+                    <input
+                      id="bio"
+                      name="bio"
+                      type="text"
+                      value={formData.bio || ''}
+                      onChange={handleInputChange}
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-black focus:border-black"
+                      placeholder="Conte um pouco sobre você"
+                    />
+                  </div>
+                </>
+              )}
+
+              {/* Campos específicos para Brand */}
+              {formData.role === UserRole.BRAND && (
+                <>
+                  <div>
+                    <label
+                      htmlFor="website"
+                      className="block text-sm font-medium text-black"
+                    >
+                      Website (opcional)
+                    </label>
+                    <input
+                      id="website"
+                      name="website"
+                      type="url"
+                      value={formData.website || ''}
+                      onChange={handleInputChange}
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-black focus:border-black"
+                      placeholder="https://suamarca.com"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="industry"
+                      className="block text-sm font-medium text-black"
+                    >
+                      Indústria (opcional)
+                    </label>
+                    <input
+                      id="industry"
+                      name="industry"
+                      type="text"
+                      value={formData.industry || ''}
+                      onChange={handleInputChange}
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-black focus:border-black"
+                      placeholder="Ex: Moda, Tecnologia, Beleza"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="description"
+                      className="block text-sm font-medium text-black"
+                    >
+                      Descrição (opcional)
+                    </label>
+                    <input
+                      id="description"
+                      name="description"
+                      type="text"
+                      value={formData.description || ''}
+                      onChange={handleInputChange}
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-black focus:border-black"
+                      placeholder="Descreva sua marca"
+                    />
+                  </div>
+                </>
+              )}
 
               {/* Submit Button */}
               <div>

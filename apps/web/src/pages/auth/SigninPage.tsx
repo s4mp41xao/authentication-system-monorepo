@@ -36,13 +36,16 @@ export function SigninPage() {
       // Armazenar dados do usuário
       localStorage.setItem('user', JSON.stringify(response.user))
 
-      // Redirecionar baseado no role
-      if (response.user.role === 'ori') {
+      // Redirecionar baseado no role (case-insensitive)
+      const userRole = response.user.role?.toLowerCase()
+      if (userRole === 'ori') {
         navigate('/admin/dashboard')
-      } else if (response.user.role === 'brand') {
+      } else if (userRole === 'brand') {
         navigate('/brand/dashboard')
-      } else {
+      } else if (userRole === 'influencer') {
         navigate('/influencer/dashboard')
+      } else {
+        navigate('/')
       }
     } catch (err: any) {
       setError(err.message || 'Credenciais inválidas')
