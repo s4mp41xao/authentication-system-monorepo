@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../../components/common/Button'
 import { authService } from '../../services/authService'
+import { brandService } from '../../services/brandService'
 
 interface BrandProfile {
   name: string
@@ -57,20 +58,43 @@ export function BrandDashboard() {
 
   const loadDashboard = async () => {
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
-      const response = await fetch(`${API_URL}/brand/dashboard`, {
-        credentials: 'include'
+      console.log('🔍 [Dashboard] Carregando dados do dashboard...')
+      
+      // Usar brandService que inclui Authorization header
+      const stats = await brandService.getDashboard()
+      const influencers = await brandService.getInfluencers()
+      const campaigns = await brandService.getCampaigns()
+      
+      // Adaptar os dados para o formato esperado
+      setDashboardData({
+        profile: {
+          name: 'Brand Profile', // TODO: buscar do backend
+          email: '',
+          active: true
+        },
+        stats: {
+          totalCampaigns: campaigns.length,
+          activeCampaigns: stats.activeCampaigns,
+          connectedInfluencers: stats.connectedInfluencers
+        },
+        influencers: influencers.map(inf => ({
+          ...inf,
+          campaigns: [] // TODO: buscar campanhas do influencer
+        })),
+        campaigns: campaigns.map(camp => ({
+          name: camp.name,
+          status: camp.status,
+          budget: camp.budget,
+          startDate: camp.startDate,
+          endDate: camp.endDate,
+          assignedInfluencers: camp.assignedInfluencers.length
+        }))
       })
-
-      if (!response.ok) {
-        throw new Error('Erro ao carregar dashboard')
-      }
-
-      const data = await response.json()
-      setDashboardData(data)
+      
+      console.log('✅ [Dashboard] Dados carregados com sucesso')
     } catch (err: any) {
       setError(err.message || 'Erro ao carregar dashboard')
-      console.error('Erro:', err)
+      console.error('❌ [Dashboard] Erro:', err)
     } finally {
       setLoading(false)
     }
