@@ -6,10 +6,11 @@ import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import type { NestExpressApplication } from '@nestjs/platform-express';
-import express from 'express';
+import express, { Request, Response } from 'express';
 
 // Create Express server for Vercel serverless
-const server = express();
+const expressApp = express();
+const adapter = new ExpressAdapter(expressApp);
 
 // Create NestJS app instance
 let app: NestExpressApplication;
@@ -19,11 +20,7 @@ async function createApp() {
     return app;
   }
 
-  const expressAdapter = new ExpressAdapter(server);
-  app = await NestFactory.create<NestExpressApplication>(
-    AppModule,
-    expressAdapter,
-  );
+  app = await NestFactory.create<NestExpressApplication>(AppModule, adapter);
 
   // Enable CORS for frontend integration
   app.enableCors({
@@ -66,7 +63,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Export for Vercel serverless
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   await createApp();
-  server(req, res);
+  expressApp(req, res);
 };
