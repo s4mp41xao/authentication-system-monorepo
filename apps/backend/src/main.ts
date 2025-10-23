@@ -4,15 +4,10 @@ config(); // load .env file contents into process.env
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module.js';
-import { ExpressAdapter } from '@nestjs/platform-express';
 import type { NestExpressApplication } from '@nestjs/platform-express';
-import express, { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 
-// Create Express server for Vercel serverless
-const expressApp = express();
-const adapter = new ExpressAdapter(expressApp);
-
-// Create NestJS app instance
+// Create NestJS app instance (cached for serverless)
 let app: NestExpressApplication;
 
 async function createApp() {
@@ -20,7 +15,7 @@ async function createApp() {
     return app;
   }
 
-  app = await NestFactory.create<NestExpressApplication>(AppModule, adapter);
+  app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   // Enable CORS for frontend integration
   app.enableCors({
