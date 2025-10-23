@@ -9,7 +9,9 @@ export function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-black">ORI Platform</h1>
+              <h1 className="text-2xl font-bold text-black">
+                Sistema de Autenticação
+              </h1>
             </div>
             <div className="flex items-center space-x-4">
               <Link
@@ -97,7 +99,7 @@ export function HomePage() {
       <footer className="border-t border-gray-200 mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center text-gray-600">
-            <p>&copy; 2025 ORI Platform. Todos os direitos reservados.</p>
+            <p>&copy; 2025 Samuel Paixão. Todos os direitos reservados.</p>
           </div>
         </div>
       </footer>

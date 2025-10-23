@@ -23,6 +23,14 @@ export interface SignupDto {
   password: string
   name: string
   role: UserRole
+  // Campos opcionais para Influencer
+  instagram?: string
+  followers?: number
+  bio?: string
+  // Campos opcionais para Brand
+  website?: string
+  industry?: string
+  description?: string
 }
 
 export interface SigninDto {
