@@ -30,6 +30,15 @@ async function createAuth() {
 
     console.log('✅ Better Auth conectado ao MongoDB com sucesso!');
 
+    const isProduction = process.env.NODE_ENV === 'production';
+    const sameSiteValue = isProduction ? 'none' : 'lax';
+    
+    console.log('🍪 Configuração de cookies:');
+    console.log('   NODE_ENV:', process.env.NODE_ENV);
+    console.log('   isProduction:', isProduction);
+    console.log('   sameSite:', sameSiteValue);
+    console.log('   secure:', true);
+
     const auth = betterAuth({
       database: mongodbAdapter(db, { client: clientInstance }),
       emailAndPassword: {
@@ -60,7 +69,7 @@ async function createAuth() {
       // Configuração explícita de cookies para cross-origin
       advanced: {
         cookieOptions: {
-          sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' para cross-origin em produção
+          sameSite: sameSiteValue,
           secure: true, // SEMPRE true (necessário para sameSite=none)
           httpOnly: true,
         },

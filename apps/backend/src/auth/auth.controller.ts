@@ -196,8 +196,8 @@ export class AuthController {
       if (finalResult.session) {
         res.cookie('better-auth.session_token', finalResult.session.token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
+          secure: true, // SEMPRE true para sameSite=none
+          sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' para cross-origin em produção
           maxAge: 30 * 24 * 60 * 60 * 1000, // 30 dias
         });
         console.log('🍪 Cookie de sessão definido:', finalResult.session.token);
@@ -296,8 +296,8 @@ export class AuthController {
       console.log('🍪 Definindo cookie com token:', result.token);
       res.cookie('better-auth.session_token', result.token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
+        secure: true, // SEMPRE true para sameSite=none
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' para cross-origin em produção
         path: '/',
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 dias
       });
