@@ -3,7 +3,7 @@
  * Execute com: npx tsx scripts/create-admin.ts
  */
 
-import { createAuth } from '../src/lib/auth';
+import { createAuth } from '../src/lib/auth.js';
 import * as dotenv from 'dotenv';
 
 dotenv.config();

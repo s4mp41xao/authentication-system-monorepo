@@ -6,7 +6,7 @@
 
 import { MongoClient } from 'mongodb';
 import * as dotenv from 'dotenv';
-import { createAuth } from '../src/lib/auth';
+import { createAuth } from '../src/lib/auth.js';
 import { randomBytes } from 'crypto';
 
 dotenv.config();
