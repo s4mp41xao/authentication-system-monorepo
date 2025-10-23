@@ -57,12 +57,9 @@ export default function BrandProfilePage() {
     const fetchProfile = async () => {
       try {
         const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
-        const response = await fetch(
-          `${API_URL}/brand/profile/${id}`,
-          {
-            credentials: 'include'
-          }
-        )
+        const response = await fetch(`${API_URL}/brand/profile/${id}`, {
+          credentials: 'include'
+        })
 
         if (!response.ok) {
           throw new Error('Erro ao carregar perfil da marca')

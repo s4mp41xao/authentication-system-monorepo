@@ -34,7 +34,22 @@ export class AuthController {
         userId: result.user?.id,
         hasSession: !!result.session,
         sessionToken: result.session?.token ? '✅ Present' : '❌ Missing',
+        userRole: result.user?.role,
       });
+
+      // Verificar se o role foi salvo no MongoDB
+      const { MongoClient, ObjectId } = await import('mongodb');
+      const tempClient = new MongoClient(process.env.DATABASE_URL!);
+      await tempClient.connect();
+      const tempDb = tempClient.db();
+      const createdUser = await tempDb.collection('user').findOne({ _id: new ObjectId(result.user.id) });
+      console.log('🔍 Usuário criado no MongoDB:', {
+        id: createdUser?._id,
+        email: createdUser?.email,
+        role: createdUser?.role,
+        hasRole: !!createdUser?.role
+      });
+      await tempClient.close();
 
       // Criar perfil automaticamente baseado no role
       try {
