@@ -1,8 +1,10 @@
+import { buildAuthHeaders } from './authHeaders'
+
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
 
-// FORCE REBUILD - v2.0.0 - Authorization Header Implementation
+// FORCE REBUILD - v2.1.0 - Authorization Header Implementation + fallback
 console.log(
-  '🚀 [AdminService] Carregado com suporte a Authorization Header v2.0.0'
+  '🚀 [AdminService] Carregado com suporte a Authorization Header v2.1.0'
 )
 
 export interface DashboardStats {
@@ -89,17 +91,7 @@ export interface BrandProfileResponse {
 
 export const adminService = {
   async getDashboard(): Promise<DashboardStats> {
-    // Extrair token do localStorage
-    const user = localStorage.getItem('user')
-    const token = user ? JSON.parse(user).token : null
-
-    const headers: HeadersInit = {
-      'Content-Type': 'application/json'
-    }
-
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`
-    }
+    const headers = buildAuthHeaders()
 
     const response = await fetch(`${API_URL}/admin/dashboard`, {
       credentials: 'include',
@@ -115,17 +107,7 @@ export const adminService = {
   },
 
   async getInfluencers(): Promise<Influencer[]> {
-    // Extrair token do localStorage
-    const user = localStorage.getItem('user')
-    const token = user ? JSON.parse(user).token : null
-
-    const headers: HeadersInit = {
-      'Content-Type': 'application/json'
-    }
-
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`
-    }
+    const headers = buildAuthHeaders()
 
     const response = await fetch(`${API_URL}/admin/influencers`, {
       credentials: 'include',
@@ -141,17 +123,7 @@ export const adminService = {
   },
 
   async getBrands(): Promise<Brand[]> {
-    // Extrair token do localStorage
-    const user = localStorage.getItem('user')
-    const token = user ? JSON.parse(user).token : null
-
-    const headers: HeadersInit = {
-      'Content-Type': 'application/json'
-    }
-
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`
-    }
+    const headers = buildAuthHeaders()
 
     const response = await fetch(`${API_URL}/admin/brands`, {
       credentials: 'include',
@@ -167,17 +139,7 @@ export const adminService = {
   },
 
   async getCampaigns(): Promise<Campaign[]> {
-    // Extrair token do localStorage
-    const user = localStorage.getItem('user')
-    const token = user ? JSON.parse(user).token : null
-
-    const headers: HeadersInit = {
-      'Content-Type': 'application/json'
-    }
-
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`
-    }
+    const headers = buildAuthHeaders()
 
     const response = await fetch(`${API_URL}/admin/campaigns`, {
       credentials: 'include',
@@ -192,16 +154,7 @@ export const adminService = {
     return data.data
   },
   async getBrandProfile(brandId: string): Promise<BrandProfileResponse> {
-    const user = localStorage.getItem('user')
-    const token = user ? JSON.parse(user).token : null
-
-    const headers: HeadersInit = {
-      'Content-Type': 'application/json'
-    }
-
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`
-    }
+    const headers = buildAuthHeaders()
 
     const response = await fetch(`${API_URL}/brand/profile/${brandId}`, {
       credentials: 'include',

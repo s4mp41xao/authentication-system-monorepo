@@ -25,7 +25,9 @@
     "seed-real-users": "npx tsx scripts/seed-real-users.ts",
     "seed-with-auth": "npx tsx scripts/seed-with-auth.ts",
     "check-sessions": "npx tsx scripts/check-sessions.ts",
-    "migrate-profiles": "npx tsx scripts/migrate-profiles.ts"
+    "migrate-profiles": "npx tsx scripts/migrate-profiles.ts",
+    "inspect-data": "npx tsx scripts/inspect-data.ts",
+    "migrate-campaigns": "npx tsx scripts/migrate-campaigns.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

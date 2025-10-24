@@ -46,6 +46,7 @@ export function BrandCampaignDetailsPage() {
     try {
       await authService.signout()
       localStorage.removeItem('user')
+      localStorage.removeItem('session_token')
       navigate('/signin')
     } catch (error) {
       console.error('Erro ao fazer logout:', error)

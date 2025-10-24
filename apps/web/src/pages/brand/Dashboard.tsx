@@ -2,53 +2,15 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../../components/common/Button'
 import { authService } from '../../services/authService'
-import { brandService } from '../../services/brandService'
-
-interface BrandProfile {
-  name: string
-  email: string
-  website?: string
-  description?: string
-  active: boolean
-}
-
-interface Campaign {
-  name: string
-  status: string
-  budget: number
-  startDate: string
-  endDate: string
-  assignedInfluencers: number
-}
-
-interface Influencer {
-  _id: string
-  userId: string
-  name: string
-  email: string
-  instagram?: string
-  followers: number
-  active: boolean
-  campaigns: Array<{
-    name: string
-    status: string
-  }>
-}
-
-interface DashboardData {
-  profile: BrandProfile
-  stats: {
-    totalCampaigns: number
-    activeCampaigns: number
-    connectedInfluencers: number
-  }
-  campaigns: Campaign[]
-  influencers: Influencer[]
-}
+import {
+  brandService,
+  type BrandDashboardResponse
+} from '../../services/brandService'
 
 export function BrandDashboard() {
   const navigate = useNavigate()
-  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null)
+  const [dashboardData, setDashboardData] =
+    useState<BrandDashboardResponse | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -60,36 +22,8 @@ export function BrandDashboard() {
     try {
       console.log('🔍 [Dashboard] Carregando dados do dashboard...')
 
-      // Usar brandService que inclui Authorization header
-      const stats = await brandService.getDashboard()
-      const influencers = await brandService.getInfluencers()
-      const campaigns = await brandService.getCampaigns()
-
-      // Adaptar os dados para o formato esperado
-      setDashboardData({
-        profile: {
-          name: 'Brand Profile', // TODO: buscar do backend
-          email: '',
-          active: true
-        },
-        stats: {
-          totalCampaigns: campaigns.length,
-          activeCampaigns: stats.activeCampaigns,
-          connectedInfluencers: stats.connectedInfluencers
-        },
-        influencers: influencers.map(inf => ({
-          ...inf,
-          campaigns: [] // TODO: buscar campanhas do influencer
-        })),
-        campaigns: campaigns.map(camp => ({
-          name: camp.name,
-          status: camp.status,
-          budget: camp.budget,
-          startDate: camp.startDate,
-          endDate: camp.endDate,
-          assignedInfluencers: camp.assignedInfluencers.length
-        }))
-      })
+      const dashboard = await brandService.getDashboard()
+      setDashboardData(dashboard)
 
       console.log('✅ [Dashboard] Dados carregados com sucesso')
     } catch (err: any) {
@@ -104,6 +38,7 @@ export function BrandDashboard() {
     try {
       await authService.signout()
       localStorage.removeItem('user')
+      localStorage.removeItem('session_token')
       navigate('/signin')
     } catch (error) {
       console.error('Erro ao fazer logout:', error)
@@ -166,7 +101,22 @@ export function BrandDashboard() {
     )
   }
 
-  const { profile, stats, campaigns, influencers } = dashboardData
+  const profile = dashboardData?.profile ?? {
+    name: 'Perfil da Marca',
+    email: '',
+    website: undefined,
+    description: undefined,
+    active: false
+  }
+
+  const stats = dashboardData?.stats ?? {
+    totalCampaigns: 0,
+    activeCampaigns: 0,
+    connectedInfluencers: 0
+  }
+
+  const campaigns = dashboardData?.campaigns ?? []
+  const influencers = dashboardData?.influencers ?? []
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-50 via-white to-slate-100 p-8">
@@ -387,7 +337,7 @@ export function BrandDashboard() {
                         {influencer.followers.toLocaleString('pt-BR')}
                       </td>
                       <td className="py-3 px-4 text-gray-700">
-                        {influencer.campaigns.length}
+                        {influencer.campaigns?.length ?? 0}
                       </td>
                     </tr>
                   ))}

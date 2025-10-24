@@ -3,8 +3,8 @@ import { useParams, useNavigate, useSearchParams } from 'react-router'
 import { influencerService } from '../../services/influencerService'
 
 interface InfluencerProfile {
-  _id: string
-  userId: string
+  _id?: string
+  userId?: string
   name: string
   email: string
   instagram?: string

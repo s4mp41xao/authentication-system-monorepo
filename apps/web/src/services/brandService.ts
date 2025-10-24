@@ -1,13 +1,24 @@
+import { buildAuthHeaders } from './authHeaders'
+
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
 
-// FORCE REBUILD - v2.0.0 - Authorization Header Implementation
+// FORCE REBUILD - v2.1.0 - Authorization Header Implementation + fallback
 console.log(
-  '🚀 [BrandService] Carregado com suporte a Authorization Header v2.0.0'
+  '🚀 [BrandService] Carregado com suporte a Authorization Header v2.1.0'
 )
 
 export interface BrandDashboardStats {
+  totalCampaigns: number
   activeCampaigns: number
   connectedInfluencers: number
+}
+
+export interface BrandProfile {
+  name: string
+  email: string
+  website?: string
+  description?: string
+  active: boolean
 }
 
 export interface Influencer {
@@ -21,6 +32,7 @@ export interface Influencer {
   youtube?: string
   followers: number
   active: boolean
+  campaigns?: Array<{ name: string; status: string }>
 }
 
 export interface Campaign {
@@ -41,57 +53,63 @@ export interface CampaignDetails {
   influencers: Influencer[]
 }
 
+export interface BrandDashboardResponse {
+  profile: BrandProfile | null
+  stats: BrandDashboardStats
+  campaigns: Array<{
+    name: string
+    status: string
+    budget?: number
+    startDate?: string
+    endDate?: string
+    assignedInfluencers: number
+  }>
+  influencers: Influencer[]
+}
+
 export const brandService = {
-  async getDashboard(): Promise<BrandDashboardStats> {
-    // Extrair token do localStorage
-    const user = localStorage.getItem('user')
-    const token = user ? JSON.parse(user).token : null
-
-    console.log('🔍 [BrandService] getDashboard chamado')
-    console.log('   User no localStorage:', user ? 'SIM' : 'NÃO')
-    console.log(
-      '   Token extraído:',
-      token ? `${token.substring(0, 10)}...` : 'NENHUM'
-    )
-
-    const headers: HeadersInit = {
-      'Content-Type': 'application/json'
-    }
-
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`
-      console.log('   ✅ Authorization header adicionado')
-    } else {
-      console.log('   ⚠️  Sem token - Authorization header NÃO adicionado')
-    }
+  async getDashboard(): Promise<BrandDashboardResponse> {
+    const headers = buildAuthHeaders()
 
     const response = await fetch(`${API_URL}/brand/dashboard`, {
       credentials: 'include',
       headers
     })
 
-    console.log('   Response status:', response.status)
-
     if (!response.ok) {
       throw new Error('Erro ao buscar dados do dashboard')
     }
 
     const data = await response.json()
-    return data.stats
+    return {
+      profile: data.profile ?? null,
+      stats: {
+        totalCampaigns: data.stats?.totalCampaigns ?? (data.campaigns?.length ?? 0),
+        activeCampaigns: data.stats?.activeCampaigns ?? 0,
+        connectedInfluencers: data.stats?.connectedInfluencers ?? 0
+      },
+      campaigns: (data.campaigns ?? []).map((campaign: any) => ({
+        name: campaign.name,
+        status: campaign.status,
+        budget: campaign.budget ?? undefined,
+        startDate: campaign.startDate ?? undefined,
+        endDate: campaign.endDate ?? undefined,
+        assignedInfluencers:
+          typeof campaign.assignedInfluencers === 'number'
+            ? campaign.assignedInfluencers
+            : Array.isArray(campaign.assignedInfluencers)
+              ? campaign.assignedInfluencers.length
+              : 0
+      })),
+      influencers: (data.influencers ?? []).map((influencer: any) => ({
+        ...influencer,
+        campaigns: influencer.campaigns ?? []
+      }))
+    }
   },
 
   async getInfluencers(): Promise<Influencer[]> {
-    // Extrair token do localStorage
-    const user = localStorage.getItem('user')
-    const token = user ? JSON.parse(user).token : null
-
-    const headers: HeadersInit = {
-      'Content-Type': 'application/json'
-    }
-
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`
-    }
+    const headers = buildAuthHeaders()
 
     const response = await fetch(`${API_URL}/brand/influencers`, {
       credentials: 'include',
@@ -107,17 +125,7 @@ export const brandService = {
   },
 
   async getCampaigns(brandId?: string): Promise<Campaign[]> {
-    // Extrair token do localStorage
-    const user = localStorage.getItem('user')
-    const token = user ? JSON.parse(user).token : null
-
-    const headers: HeadersInit = {
-      'Content-Type': 'application/json'
-    }
-
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`
-    }
+    const headers = buildAuthHeaders()
 
     const url = brandId
       ? `${API_URL}/brand/campaigns?brandId=${brandId}`
@@ -137,17 +145,7 @@ export const brandService = {
   },
 
   async getCampaignDetails(campaignId: string): Promise<CampaignDetails> {
-    // Extrair token do localStorage
-    const user = localStorage.getItem('user')
-    const token = user ? JSON.parse(user).token : null
-
-    const headers: HeadersInit = {
-      'Content-Type': 'application/json'
-    }
-
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`
-    }
+    const headers = buildAuthHeaders()
 
     const response = await fetch(`${API_URL}/brand/campaigns/${campaignId}`, {
       credentials: 'include',

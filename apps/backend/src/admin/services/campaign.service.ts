@@ -19,7 +19,10 @@ export class CampaignService {
   }
 
   async findActive(): Promise<Campaign[]> {
-    return this.campaignModel.find({ status: CampaignStatus.ACTIVE }).lean().exec();
+    return this.campaignModel
+      .find({ status: CampaignStatus.ACTIVE })
+      .lean()
+      .exec();
   }
 
   async countActive(): Promise<number> {

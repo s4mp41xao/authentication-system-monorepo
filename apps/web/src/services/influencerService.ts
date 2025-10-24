@@ -1,8 +1,10 @@
+import { buildAuthHeaders } from './authHeaders'
+
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
 
-// FORCE REBUILD - v2.0.0 - Authorization Header Implementation
+// FORCE REBUILD - v2.1.0 - Authorization Header Implementation + fallback
 console.log(
-  '🚀 [InfluencerService] Carregado com suporte a Authorization Header v2.0.0'
+  '🚀 [InfluencerService] Carregado com suporte a Authorization Header v2.1.0'
 )
 
 export interface InfluencerProfile {
@@ -39,17 +41,7 @@ export interface CampaignWithBrand {
 
 export const influencerService = {
   async getDashboard(): Promise<InfluencerDashboardData> {
-    // Tentar obter token do localStorage (fallback para cross-origin)
-    const user = localStorage.getItem('user')
-    const token = user ? JSON.parse(user).token : null
-
-    const headers: HeadersInit = {
-      'Content-Type': 'application/json'
-    }
-
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`
-    }
+    const headers = buildAuthHeaders()
 
     const response = await fetch(`${API_URL}/influencer/dashboard`, {
       credentials: 'include',
@@ -68,16 +60,7 @@ export const influencerService = {
   },
 
   async getCampaigns(): Promise<CampaignWithBrand[]> {
-    const user = localStorage.getItem('user')
-    const token = user ? JSON.parse(user).token : null
-
-    const headers: HeadersInit = {
-      'Content-Type': 'application/json'
-    }
-
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`
-    }
+    const headers = buildAuthHeaders()
 
     const response = await fetch(`${API_URL}/influencer/campaigns`, {
       credentials: 'include',
@@ -94,23 +77,26 @@ export const influencerService = {
 
   async getProfile(influencerId: string): Promise<{
     profile: InfluencerProfile
-    stats: { assignedCampaigns: number; campaigns: Array<{ name: string; budget: number; startDate: string; endDate: string; status: string }> }
+    stats: {
+      assignedCampaigns: number
+      campaigns: Array<{
+        name: string
+        budget: number
+        startDate: string
+        endDate: string
+        status: string
+      }>
+    }
   }> {
-    const user = localStorage.getItem('user')
-    const token = user ? JSON.parse(user).token : null
+    const headers = buildAuthHeaders()
 
-    const headers: HeadersInit = {
-      'Content-Type': 'application/json'
-    }
-
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`
-    }
-
-    const response = await fetch(`${API_URL}/influencer/profile/${influencerId}`, {
-      credentials: 'include',
-      headers
-    })
+    const response = await fetch(
+      `${API_URL}/influencer/profile/${influencerId}`,
+      {
+        credentials: 'include',
+        headers
+      }
+    )
 
     if (!response.ok) {
       throw new Error('Erro ao carregar perfil do influencer')

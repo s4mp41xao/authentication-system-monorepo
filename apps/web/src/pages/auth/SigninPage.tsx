@@ -33,12 +33,25 @@ export function SigninPage() {
       const response = await authService.signin(formData)
       console.log('Login bem-sucedido:', response)
 
+      const tokenValue =
+        (response as any)?.token ||
+        (response as any)?.session?.token ||
+        (response as any)?.sessionToken ||
+        (response as any)?.session_token ||
+        null
+
       // Armazenar dados do usuário E token
       const userWithToken = {
         ...response.user,
-        token: response.token || (response as any).session?.token
+        token: tokenValue,
+        sessionToken: tokenValue
       }
       localStorage.setItem('user', JSON.stringify(userWithToken))
+      if (tokenValue) {
+        localStorage.setItem('session_token', tokenValue)
+      } else {
+        localStorage.removeItem('session_token')
+      }
       console.log('✅ User e token salvos no localStorage')
 
       // Redirecionar baseado no role (case-insensitive)
